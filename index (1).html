@@ -3,905 +3,925 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>우리 몸 통합 탐구 | 소화·순환·호흡·배설</title>
-<meta name="description" content="중학교 과학 '동물과 에너지' 단원 — 소화, 순환, 호흡, 배설의 통합적 관계를 탐구하는 웹앱">
+<title>배설계 탐구실</title>
+<meta name="description" content="중학교 과학 배설 단원 학습 웹앱 — 노폐물의 생성, 배설 기관, 오줌 생성 과정(여과·재흡수·분비), 퀴즈">
 <style>
-  :root {
-    --paper: #fbf8f0;
-    --paper2: #f3eee1;
-    --ink: #2a2824;
-    --ink2: #5b574e;
-    --line: #d8d0bb;
-    --dig: #d9822b;
-    --circ: #c8414b;
-    --resp: #2f74c0;
-    --exc: #2e8f68;
-    --cell: #7a5bb5;
-    --co2: #6d6a63;
-    --accent: #1f4e79;
-    --ok: #2e8f68;
-    --bad: #c8414b;
-    --radius: 14px;
-    --fs: 20px;
-  }
-  * { box-sizing: border-box; }
-  html { font-size: var(--fs); -webkit-text-size-adjust: 100%; }
-  body {
-    margin: 0;
-    background: var(--paper);
-    color: var(--ink);
-    font-family: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", sans-serif;
-    line-height: 1.6;
-    word-break: keep-all;
-    background-image: linear-gradient(var(--paper2) 1px, transparent 1px);
-    background-size: 100% 2.2rem;
-  }
-  h1, h2, h3, .serif {
-    font-family: "Noto Serif KR", "AppleMyungjo", "Batang", "바탕", serif;
-  }
-  button { font: inherit; cursor: pointer; }
+:root{
+  --paper:#fbf8f1; --ink:#2b2a26; --muted:#6b675e; --line:#ddd5c4;
+  --main:#2f6b4f; --main-dark:#234f3b; --main-soft:#e4f0e8;
+  --blue:#2c5d8f; --blue-soft:#e8f0f9;
+  --orange:#b8621b; --orange-soft:#fcf0e1;
+  --red:#b83b2a; --red-soft:#fbe7e3;
+  --yellow-soft:#fff6d6;
+  --card:#ffffff; --radius:14px;
+}
+html{font-size:18px; -webkit-text-size-adjust:100%}
+@media (min-width:1000px){ html{font-size:20px} }
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"Pretendard","Noto Sans KR","Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",sans-serif;
+  line-height:1.7; word-break:keep-all; overflow-wrap:break-word;
+}
+button{font:inherit; color:inherit}
 
-  /* ---------- 머리말 ---------- */
-  header {
-    background: var(--accent);
-    color: #fff;
-    padding: 0.7rem 1rem;
-    border-bottom: 6px solid #e9c46a;
-  }
-  .head-inner {
-    max-width: 1280px; margin: 0 auto;
-    display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap;
-  }
-  .unit-badge {
-    background: #e9c46a; color: #2a2824; font-weight: 800;
-    padding: 0.15rem 0.6rem; border-radius: 6px; font-size: 0.8rem; white-space: nowrap;
-  }
-  header h1 { margin: 0; font-size: 1.35rem; flex: 1 1 auto; line-height: 1.3; }
-  header h1 small { display: block; font-size: 0.7rem; font-weight: 400; opacity: 0.85; font-family: inherit; }
-  .tools { display: flex; gap: 0.4rem; }
-  .tool-btn {
-    background: rgba(255,255,255,0.15); color: #fff; border: 2px solid rgba(255,255,255,0.5);
-    border-radius: 10px; padding: 0.3rem 0.7rem; font-size: 0.85rem; font-weight: 700; min-height: 2.4rem;
-  }
-  .tool-btn:hover { background: rgba(255,255,255,0.3); }
+/* ---------- 머리말 ---------- */
+header.top{
+  background:var(--main); color:#fff; padding:18px 16px 14px;
+  border-bottom:6px solid #c9a646;
+}
+.top-inner{max-width:1100px; margin:0 auto; display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap}
+.unit-tag{display:inline-block; font-size:.78rem; background:rgba(255,255,255,.18); padding:2px 10px; border-radius:999px; letter-spacing:.02em}
+header.top h1{margin:4px 0 0; font-size:1.6rem; line-height:1.3}
+header.top h1 small{display:block; font-size:.85rem; font-weight:400; opacity:.9}
+.tools{display:flex; gap:8px}
+.tool-btn{
+  min-width:52px; min-height:48px; border:2px solid rgba(255,255,255,.6); background:transparent; color:#fff;
+  border-radius:10px; font-weight:700; cursor:pointer; padding:0 10px;
+}
+.tool-btn:hover{background:rgba(255,255,255,.15)}
 
-  /* ---------- 탭 ---------- */
-  nav.tabs {
-    max-width: 1280px; margin: 0.9rem auto 0; padding: 0 1rem;
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem;
-  }
-  .tab {
-    background: #fff; border: 2px solid var(--line); border-bottom-width: 5px;
-    border-radius: var(--radius); padding: 0.55rem 0.4rem; font-weight: 800; font-size: 0.95rem;
-    color: var(--ink2); min-height: 3rem;
-  }
-  .tab .num {
-    display: inline-block; background: var(--paper2); color: var(--ink); border-radius: 50%;
-    width: 1.6rem; height: 1.6rem; line-height: 1.6rem; text-align: center; margin-right: 0.3rem; font-size: 0.85rem;
-  }
-  .tab[aria-selected="true"] { border-color: var(--accent); color: var(--accent); background: #eef4fa; }
-  .tab[aria-selected="true"] .num { background: var(--accent); color: #fff; }
+/* ---------- 탭 ---------- */
+nav.tabs{
+  position:sticky; top:0; z-index:20; background:#f3eee2; border-bottom:2px solid var(--line);
+  overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:thin;
+}
+.tabs-inner{max-width:1100px; margin:0 auto; display:flex; gap:6px; padding:8px 12px; width:max-content; min-width:100%}
+@media (min-width:1100px){ .tabs-inner{width:auto} }
+.tab{
+  flex:0 0 auto; min-height:52px; padding:6px 16px; border-radius:10px; border:2px solid transparent;
+  background:transparent; cursor:pointer; font-weight:700; color:var(--muted); white-space:nowrap;
+}
+.tab .n{display:inline-grid; place-items:center; width:1.6em; height:1.6em; border-radius:50%; background:#d9d1bf; color:#fff; font-size:.8em; margin-right:6px}
+.tab[aria-selected="true"]{background:#fff; color:var(--main-dark); border-color:var(--main)}
+.tab[aria-selected="true"] .n{background:var(--main)}
 
-  main { max-width: 1280px; margin: 0 auto; padding: 1rem; }
-  section.page { display: none; }
-  section.page.active { display: block; animation: fade .3s; }
-  @keyframes fade { from { opacity: 0; transform: translateY(6px);} to { opacity: 1; transform: none; } }
+/* ---------- 본문 ---------- */
+main{max-width:1100px; margin:0 auto; padding:20px 16px 60px}
+.page h2{
+  display:flex; align-items:center; gap:12px; font-size:1.5rem; margin:6px 0 6px;
+  border-bottom:3px double var(--line); padding-bottom:10px;
+}
+.page h2 .num{
+  flex:0 0 auto; width:2.1em; height:2.1em; border-radius:10px; background:var(--main); color:#fff;
+  display:grid; place-items:center; font-size:.9em;
+}
+.lead{color:var(--muted); margin:8px 0 18px}
+h3{font-size:1.15rem; margin:22px 0 10px}
 
-  .goal {
-    background: #fff; border: 2px dashed var(--line); border-radius: var(--radius);
-    padding: 0.6rem 1rem; margin-bottom: 1rem; font-size: 0.95rem;
-  }
-  .goal b { color: var(--accent); }
+.box{background:var(--card); border:2px solid var(--line); border-radius:var(--radius); padding:16px 18px; margin:14px 0; position:relative}
+.box > .tag{
+  display:inline-block; font-size:.8rem; font-weight:800; padding:2px 12px; border-radius:999px; margin-bottom:6px; color:#fff;
+}
+.box.concept{border-color:#9fb9d6; background:var(--blue-soft)} .box.concept>.tag{background:var(--blue)}
+.box.inquiry{border-color:#9cc6ad; background:#f4faf6} .box.inquiry>.tag{background:var(--main)}
+.box.think{border-color:#e4bb8c; background:var(--orange-soft)} .box.think>.tag{background:var(--orange)}
+.box.warn{border-color:#e3a59a; background:var(--red-soft)} .box.warn>.tag{background:var(--red)}
+.box p{margin:6px 0}
+.box ul{margin:6px 0; padding-left:1.3em}
+.key{background:linear-gradient(transparent 58%, #ffe58a 58%); font-weight:800}
 
-  .card {
-    background: #fff; border: 2px solid var(--line); border-radius: var(--radius);
-    padding: 1rem 1.1rem; box-shadow: 0 3px 0 var(--line);
-  }
+.btn{
+  min-height:52px; padding:8px 18px; border-radius:12px; border:2px solid var(--main); background:#fff; color:var(--main-dark);
+  font-weight:800; cursor:pointer; transition:transform .08s, background .15s;
+}
+.btn:hover{background:var(--main-soft)}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:var(--main); color:#fff}
+.btn.primary:hover{background:var(--main-dark)}
+.btn.on{background:var(--main); color:#fff}
+.btn:disabled{opacity:.4; cursor:not-allowed}
+.btn-row{display:flex; flex-wrap:wrap; gap:10px; margin:12px 0}
 
-  /* ---------- 통합 지도 ---------- */
-  .explore { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 1rem; align-items: start; }
-  .map-wrap { padding: 0.5rem; position: relative; }
-  .map-bar { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; margin: 0.2rem 0.4rem 0.4rem; }
-  .chip-btn {
-    border: 2px solid var(--line); background: var(--paper); border-radius: 999px;
-    padding: 0.25rem 0.8rem; font-weight: 700; font-size: 0.85rem; min-height: 2.4rem; color: var(--ink);
-  }
-  .chip-btn[aria-pressed="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
-  svg#map { width: 100%; height: auto; display: block; }
-  .map-swipe { display: none; }
-  #map text { font-family: inherit; }
-  .node { cursor: pointer; transition: opacity .3s; }
-  .node rect.box { fill: #fff; stroke-width: 3; transition: stroke-width .2s, fill .2s; }
-  .node:hover rect.box, .node:focus rect.box { stroke-width: 6; }
-  .node:focus { outline: none; }
-  .node.selected rect.box { stroke-width: 6; }
-  .node .ttl { font-size: 28px; font-weight: 800; text-anchor: middle; }
-  .node .sub { font-size: 17px; fill: var(--ink2); text-anchor: middle; }
-  .flow { transition: opacity .3s; }
-  .flow path.ln { fill: none; stroke-width: 7; stroke-linecap: round; }
-  .flow text {
-    font-size: 21px; font-weight: 800; paint-order: stroke; stroke: var(--paper); stroke-width: 6px; stroke-linejoin: round;
-  }
-  .flow .dot { display: none; }
-  svg.moving .flow .dot { display: inline; }
-  svg.focus .node:not(.hl), svg.focus .flow:not(.hl) { opacity: 0.13; }
-  svg.focus .node.hl rect.box { stroke-width: 7; fill: #fffbea; }
-  svg.focus .flow.hl path.ln { stroke-width: 10; }
-  svg.focus .flow.hl .dot { display: inline; }
-  .outside { font-size: 18px; fill: var(--ink2); font-weight: 700; text-anchor: middle; }
+.two{display:grid; grid-template-columns:1.25fr 1fr; gap:20px; align-items:start}
+@media (max-width:840px){ .two{grid-template-columns:1fr} }
+.sticky{position:sticky; top:84px}
+@media (max-width:840px){ .sticky{position:static} }
 
-  .side { display: flex; flex-direction: column; gap: 0.8rem; }
-  .mode-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; }
-  .mode-switch button {
-    border: 2px solid var(--line); background: #fff; border-radius: 12px; padding: 0.5rem; font-weight: 800; min-height: 3rem;
-  }
-  .mode-switch button[aria-pressed="true"] { background: #1f4e79; color: #fff; border-color: #1f4e79; }
-  .info h2 { margin: 0 0 0.3rem; font-size: 1.35rem; display: flex; align-items: center; gap: 0.5rem; }
-  .info h2 .swatch { width: 1rem; height: 1rem; border-radius: 4px; display: inline-block; }
-  .info .role { font-weight: 700; margin: 0 0 0.6rem; }
-  .info ul { margin: 0.3rem 0 0.6rem; padding-left: 1.2rem; }
-  .info li { margin: 0.25rem 0; }
-  .organs { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0.3rem 0 0.6rem; }
-  .organs span { background: var(--paper2); border-radius: 8px; padding: 0.05rem 0.55rem; font-size: 0.9rem; font-weight: 700; }
-  .connect {
-    border-left: 6px solid #e9c46a; background: #fffbea; padding: 0.5rem 0.8rem; border-radius: 0 10px 10px 0; font-size: 0.95rem;
-  }
-  .connect b { color: #8a6500; }
-  .hint { color: var(--ink2); font-size: 0.9rem; }
+.svgwrap{background:#fff; border:2px solid var(--line); border-radius:var(--radius); padding:8px; overflow-x:auto}
+.svgwrap svg{display:block; width:100%; height:auto}
+.svgwrap.wide svg{min-width:540px}
+.hint{font-size:.85rem; color:var(--muted); margin:6px 2px 0}
 
-  .journey-pick { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; }
-  .journey-pick button {
-    border: 2px solid var(--line); background: #fff; border-radius: 12px; padding: 0.45rem 0.4rem;
-    font-weight: 800; font-size: 0.9rem; min-height: 3rem; text-align: left; line-height: 1.3;
-  }
-  .journey-pick button .em { font-size: 1.2rem; margin-right: 0.2rem; }
-  .journey-pick button[aria-pressed="true"] { border-color: var(--accent); background: #eef4fa; color: var(--accent); }
-  .step-box { margin-top: 0.6rem; }
-  .step-loc { display: inline-block; background: var(--accent); color: #fff; font-weight: 800; border-radius: 8px; padding: 0.05rem 0.6rem; font-size: 0.9rem; }
-  .step-title { font-size: 1.25rem; margin: 0.4rem 0 0.2rem; }
-  .step-text { margin: 0 0 0.6rem; }
-  .progress { display: flex; gap: 0.3rem; margin: 0.5rem 0; }
-  .progress i { flex: 1; height: 0.45rem; border-radius: 4px; background: var(--paper2); }
-  .progress i.on { background: var(--accent); }
-  .step-nav { display: flex; gap: 0.4rem; }
-  .big-btn {
-    flex: 1; border: none; border-radius: 12px; padding: 0.55rem 0.8rem; font-weight: 800; min-height: 3rem;
-    background: var(--accent); color: #fff; box-shadow: 0 3px 0 #123250;
-  }
-  .big-btn.ghost { background: #fff; color: var(--accent); border: 2px solid var(--accent); box-shadow: none; }
-  .big-btn:disabled { opacity: 0.4; cursor: default; }
-  .think {
-    margin-top: 0.6rem; background: #f1ecff; border-radius: 10px; padding: 0.5rem 0.8rem; font-size: 0.95rem;
-  }
-  .think b { color: var(--cell); }
+.next-wrap{margin-top:30px; display:flex; justify-content:flex-end}
 
-  .legend { display: flex; flex-wrap: wrap; gap: 0.3rem 0.9rem; font-size: 0.85rem; margin: 0.3rem 0.4rem 0; color: var(--ink2); }
-  .legend span::before { content: ""; display: inline-block; width: 1.2rem; height: 0.35rem; border-radius: 3px; margin-right: 0.3rem; vertical-align: middle; background: var(--c); }
+/* ---------- 1. 노폐물 ---------- */
+.nutri-btns .btn{min-width:120px}
+.flow{display:flex; flex-direction:column; gap:12px; margin-top:12px}
+.flow-row{background:#fff; border:2px solid var(--line); border-radius:12px; padding:12px; animation:pop .35s ease}
+.flow-line{display:flex; flex-wrap:wrap; align-items:center; gap:6px}
+.chip{display:inline-block; padding:4px 12px; border-radius:999px; font-weight:800; border:2px solid}
+.chip.co2{background:#eef0f2; border-color:#8a96a3}
+.chip.water{background:#e3f1fb; border-color:#4a9bd4}
+.chip.nh3{background:#fdeede; border-color:#e08a3a}
+.chip.organ{background:#fff; border-color:var(--line); font-weight:600}
+.arrow{color:var(--muted); font-weight:800}
+.flow-note{font-size:.9rem; color:var(--muted); margin-top:6px}
+@keyframes pop{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
 
-  /* ---------- 운동 실험실 ---------- */
-  .lab { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .slider-row { margin: 0.6rem 0 0.2rem; }
-  input[type=range] { width: 100%; height: 2.6rem; accent-color: var(--circ); }
-  .ticks { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--ink2); font-weight: 700; }
-  .level-name { font-size: 1.5rem; font-weight: 800; margin: 0.3rem 0; color: var(--circ); }
-  .gauges { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-top: 0.6rem; }
-  .gauge { background: var(--paper); border: 2px solid var(--line); border-radius: 12px; padding: 0.5rem 0.7rem; }
-  .gauge .lbl { font-size: 0.85rem; color: var(--ink2); font-weight: 700; }
-  .gauge .val { font-size: 1.6rem; font-weight: 800; line-height: 1.2; }
-  .gauge .val small { font-size: 0.8rem; color: var(--ink2); }
-  .bar { height: 0.55rem; background: var(--paper2); border-radius: 6px; overflow: hidden; margin-top: 0.3rem; }
-  .bar i { display: block; height: 100%; width: 0; border-radius: 6px; transition: width .4s; }
-  .anim-row { display: flex; justify-content: space-around; align-items: center; margin: 0.6rem 0; }
-  .anim-row figure { margin: 0; text-align: center; font-size: 0.85rem; font-weight: 700; color: var(--ink2); }
-  .heart-ic { font-size: 3.6rem; display: inline-block; animation: beat 0.86s infinite; color: var(--circ); line-height: 1; }
-  @keyframes beat { 0%,100% { transform: scale(1);} 15% { transform: scale(1.22);} 30% { transform: scale(1);} 45% { transform: scale(1.1);} }
-  .lung-ic { display: inline-block; animation: breathe 4s infinite ease-in-out; line-height: 1; }
-  @keyframes breathe { 0%,100% { transform: scale(0.85);} 50% { transform: scale(1.15);} }
-  .chain { list-style: none; padding: 0; margin: 0.4rem 0 0; counter-reset: c; }
-  .chain li {
-    counter-increment: c; position: relative; padding: 0.45rem 0.6rem 0.45rem 2.6rem; margin-bottom: 0.45rem;
-    background: var(--paper); border: 2px solid var(--line); border-radius: 10px; transition: background .3s, border-color .3s;
-  }
-  .chain li::before {
-    content: counter(c); position: absolute; left: 0.6rem; top: 0.5rem; width: 1.5rem; height: 1.5rem; border-radius: 50%;
-    background: var(--ink2); color: #fff; font-weight: 800; text-align: center; line-height: 1.5rem; font-size: 0.85rem;
-  }
-  .chain li.on { background: #fffbea; border-color: #e9c46a; }
-  .chain li.on::before { background: #c58b00; }
-  .chain li .tag { font-size: 0.75rem; font-weight: 800; color: #fff; border-radius: 6px; padding: 0 0.4rem; margin-right: 0.3rem; }
+/* ---------- SVG 공통 ---------- */
+.lbl{font-size:17px; font-weight:800; fill:#2b2a26; paint-order:stroke; stroke:#fff; stroke-width:5px; stroke-linejoin:round; cursor:pointer; transition:opacity .2s}
+.lbl.sm{font-size:14px; font-weight:700}
+.lead-line{stroke:#7a7568; stroke-width:1.6; stroke-dasharray:4 3; transition:opacity .2s}
+svg.hide-labels .lbl, svg.hide-labels .lead-line{opacity:0}
+.part{cursor:pointer}
+.part:hover{opacity:.85}
+.part.sel{animation:blink 1s ease-in-out infinite; filter:drop-shadow(0 0 5px #ffb300)}
+@keyframes blink{50%{opacity:.6}}
 
-  /* ---------- 분류 게임 ---------- */
-  .terms { display: flex; flex-wrap: wrap; gap: 0.5rem; min-height: 3.4rem; margin: 0.6rem 0 1rem; }
-  .term {
-    background: #fff; border: 2px solid var(--ink2); border-radius: 12px; padding: 0.4rem 0.9rem; font-weight: 800;
-    min-height: 3rem; font-size: 1rem; box-shadow: 0 3px 0 var(--line);
-  }
-  .term.picked { background: #1f4e79; color: #fff; border-color: #1f4e79; transform: translateY(-3px); }
-  .term.shake { animation: shake .4s; border-color: var(--bad); }
-  @keyframes shake { 20%,60% { transform: translateX(-6px);} 40%,80% { transform: translateX(6px);} }
-  .bins { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; }
-  .bin {
-    border: 3px dashed var(--c); border-radius: var(--radius); background: #fff; padding: 0.6rem; min-height: 9rem;
-    text-align: left; color: var(--ink); display: flex; flex-direction: column; gap: 0.35rem;
-  }
-  .bin h3 { margin: 0; color: var(--c); font-size: 1.15rem; }
-  .bin .placed { display: flex; flex-wrap: wrap; gap: 0.3rem; }
-  .bin .placed span { background: var(--c); color: #fff; border-radius: 8px; padding: 0.05rem 0.5rem; font-size: 0.85rem; font-weight: 700; }
-  .bin.ready { background: #fffbea; border-style: solid; }
-  .feedback { min-height: 2.2rem; font-weight: 800; margin: 0.4rem 0; }
-  .feedback.ok { color: var(--ok); } .feedback.bad { color: var(--bad); }
-  .scoreline { display: flex; justify-content: space-between; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.info{min-height:200px}
+.info h3{margin-top:0; display:flex; align-items:center; gap:8px}
+.info .swatch{width:20px; height:20px; border-radius:5px; border:2px solid rgba(0,0,0,.2)}
 
-  /* ---------- 퀴즈 ---------- */
-  .quiz { max-width: 860px; margin: 0 auto; }
-  .q-head { display: flex; justify-content: space-between; font-weight: 800; color: var(--ink2); }
-  .q-text { font-size: 1.3rem; font-weight: 800; margin: 0.6rem 0 0.8rem; }
-  .opts { display: grid; gap: 0.5rem; }
-  .opt {
-    text-align: left; background: #fff; border: 2px solid var(--line); border-radius: 12px; padding: 0.6rem 0.9rem;
-    font-size: 1.05rem; min-height: 3.2rem; display: flex; gap: 0.6rem; align-items: center; color: var(--ink);
-  }
-  .opt .lt { flex: none; width: 2rem; height: 2rem; border-radius: 50%; background: var(--paper2); text-align: center; line-height: 2rem; font-weight: 800; }
-  .opt:hover:not(:disabled) { border-color: var(--accent); }
-  .opt.correct { border-color: var(--ok); background: #e6f4ec; }
-  .opt.correct .lt { background: var(--ok); color: #fff; }
-  .opt.wrong { border-color: var(--bad); background: #fbe9ea; }
-  .opt.wrong .lt { background: var(--bad); color: #fff; }
-  .explain { margin-top: 0.8rem; border-left: 6px solid var(--accent); background: #eef4fa; padding: 0.6rem 0.9rem; border-radius: 0 10px 10px 0; display: none; }
-  .explain.show { display: block; }
-  .result { text-align: center; }
-  .result .big { font-size: 3rem; font-weight: 800; color: var(--accent); }
+/* ---------- 3. 네프론 ---------- */
+.step-dots{display:flex; gap:6px; flex-wrap:wrap; margin:10px 0}
+.step-dot{min-height:44px; padding:4px 12px; border-radius:999px; border:2px solid var(--line); background:#fff; font-weight:700; cursor:pointer; font-size:.9rem}
+.step-dot.on{border-color:var(--main); background:var(--main); color:#fff}
+.ptc{transition:transform 1.2s cubic-bezier(.45,.05,.35,1)}
+.s-filt,.s-reab,.s-secr,.s-out{opacity:0; transition:opacity .4s}
+svg[data-step="1"] .s-filt{opacity:1}
+svg[data-step="2"] .s-reab{opacity:1}
+svg[data-step="3"] .s-secr{opacity:1}
+svg[data-step="4"] .s-out{opacity:1}
+.legend{display:flex; flex-wrap:wrap; gap:8px 14px; margin:10px 0; font-size:.9rem}
+.legend span{display:inline-flex; align-items:center; gap:6px}
+.legend i{display:inline-block; border-radius:50%; border:1.5px solid rgba(0,0,0,.25)}
+table{border-collapse:collapse; width:100%; background:#fff; font-size:.95rem}
+th,td{border:1.5px solid var(--line); padding:8px 10px; text-align:center}
+th{background:#f3eee2}
+td:first-child,th:first-child{text-align:left}
+.count-cell{font-weight:800; font-size:1.05rem}
+.count-cell.zero{color:#bbb; font-weight:400}
 
-  footer { text-align: center; font-size: 0.8rem; color: var(--ink2); padding: 1.2rem 1rem 2rem; }
+/* ---------- 4. 성분 비교 ---------- */
+.cmp tbody tr{cursor:pointer}
+.cmp tbody tr:hover{background:var(--yellow-soft)}
+.cmp tbody tr.sel{background:#fff1b8}
+.bars{display:flex; flex-direction:column; gap:10px; margin:10px 0}
+.bar-row{display:grid; grid-template-columns:5.5em 1fr 4.5em; gap:10px; align-items:center}
+.bar-track{height:30px; background:#f0ece2; border-radius:8px; overflow:hidden}
+.bar-fill{height:100%; border-radius:8px; width:0; transition:width .8s ease}
+.reveal{display:none; margin-top:8px; padding:10px 12px; background:#fff; border-radius:10px; border:1.5px dashed var(--orange)}
+.reveal.show{display:block; animation:pop .3s}
 
-  /* ---------- 반응형 ---------- */
-  @media (max-width: 960px) {
-    .explore, .lab { grid-template-columns: minmax(0, 1fr); }
-    .map-wrap { min-width: 0; }
-    .bins { grid-template-columns: 1fr 1fr; }
-  }
-  @media (max-width: 600px) {
-    :root { --fs: 17px; }
-    nav.tabs { grid-template-columns: 1fr 1fr; }
-    header h1 { font-size: 1.15rem; }
-    .gauges { grid-template-columns: 1fr 1fr; }
-    .map-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    svg#map { min-width: 640px; }
-    .map-swipe { display: block !important; margin: 0.2rem 0.4rem; }
-    main { padding: 0.8rem 16px; }
-    nav.tabs { padding: 0 16px; }
-  }
+/* ---------- 5. 순서 게임 ---------- */
+.slots{display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:10px; margin:14px 0}
+.slot{min-height:64px; border:2px dashed var(--line); border-radius:12px; display:flex; align-items:center; justify-content:center; text-align:center; padding:6px; background:#fff; font-weight:800; position:relative}
+.slot .sn{position:absolute; top:4px; left:8px; font-size:.75rem; color:var(--muted); font-weight:700}
+.slot.filled{border-style:solid; border-color:var(--main); background:var(--main-soft); animation:pop .3s}
+.pool{display:flex; flex-wrap:wrap; gap:10px}
+.pool .btn{min-width:120px}
+.pool .btn.used{visibility:hidden}
+.shake{animation:shake .4s; border-color:var(--red)!important; background:var(--red-soft)!important}
+@keyframes shake{20%,60%{transform:translateX(-6px)} 40%,80%{transform:translateX(6px)}}
+.msg{min-height:1.7em; font-weight:800; margin:8px 0}
+.msg.good{color:var(--main)} .msg.bad{color:var(--red)}
+
+/* ---------- 6. 퀴즈 ---------- */
+.quiz-card{background:#fff; border:2px solid var(--line); border-radius:var(--radius); padding:20px}
+.q-progress{height:10px; background:#eee7d8; border-radius:999px; overflow:hidden; margin-bottom:14px}
+.q-progress div{height:100%; background:var(--main); transition:width .4s}
+.q-meta{color:var(--muted); font-size:.9rem; font-weight:700}
+.q-text{font-size:1.25rem; font-weight:800; margin:6px 0 16px}
+.opts{display:grid; gap:10px}
+.opt{
+  text-align:left; min-height:56px; padding:10px 16px; border-radius:12px; border:2px solid var(--line); background:#fff;
+  cursor:pointer; font-weight:700; display:flex; gap:10px; align-items:center;
+}
+.opt:hover:not(:disabled){border-color:var(--main); background:#f6fbf8}
+.opt .on{flex:0 0 auto; width:1.8em; height:1.8em; border-radius:50%; background:#f0ece2; display:grid; place-items:center; font-size:.85em}
+.opt.correct{border-color:var(--main); background:var(--main-soft)}
+.opt.correct .on{background:var(--main); color:#fff}
+.opt.wrong{border-color:var(--red); background:var(--red-soft)}
+.opt.wrong .on{background:var(--red); color:#fff}
+.opt:disabled{cursor:default}
+.exp{margin-top:14px; padding:12px 14px; border-radius:10px; background:var(--blue-soft); border-left:5px solid var(--blue); animation:pop .3s}
+.score-big{font-size:3rem; font-weight:900; color:var(--main); text-align:center; margin:10px 0}
+
+footer{text-align:center; color:var(--muted); font-size:.85rem; padding:20px 16px 40px; border-top:1px solid var(--line)}
+
+@media (prefers-reduced-motion: reduce){ *{animation:none!important; transition:none!important} }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="head-inner">
-    <span class="unit-badge">중2 과학 · 동물과 에너지</span>
-    <h1 class="serif">우리 몸 통합 탐구
-      <small>소화 · 순환 · 호흡 · 배설은 어떻게 함께 일할까?</small>
-    </h1>
-    <div class="tools">
-      <button class="tool-btn" id="fontDown" title="글자 작게" aria-label="글자 작게">가−</button>
-      <button class="tool-btn" id="fontUp" title="글자 크게" aria-label="글자 크게">가+</button>
-      <button class="tool-btn" id="fullBtn" title="전체 화면">⛶ 전체 화면</button>
+<header class="top">
+  <div class="top-inner">
+    <div>
+      <span class="unit-tag">중학교 과학 · 동물과 에너지 · 배설</span>
+      <h1>배설계 탐구실<small>노폐물은 어떻게 몸 밖으로 나갈까?</small></h1>
+    </div>
+    <div class="tools" aria-label="화면 도구">
+      <button class="tool-btn" id="fsDown" title="글자 작게" aria-label="글자 작게">가−</button>
+      <button class="tool-btn" id="fsUp" title="글자 크게" aria-label="글자 크게">가+</button>
+      <button class="tool-btn" id="fullBtn" title="전체 화면" aria-label="전체 화면">⛶</button>
     </div>
   </div>
 </header>
 
-<nav class="tabs" role="tablist">
-  <button class="tab" role="tab" aria-selected="true" data-page="p-map"><span class="num">1</span>통합 지도</button>
-  <button class="tab" role="tab" aria-selected="false" data-page="p-lab"><span class="num">2</span>운동 실험실</button>
-  <button class="tab" role="tab" aria-selected="false" data-page="p-sort"><span class="num">3</span>용어 분류</button>
-  <button class="tab" role="tab" aria-selected="false" data-page="p-quiz"><span class="num">4</span>확인 퀴즈</button>
+<nav class="tabs" aria-label="학습 단계">
+  <div class="tabs-inner" role="tablist">
+    <button class="tab" role="tab" data-tab="intro"><span class="n">1</span>노폐물의 생성</button>
+    <button class="tab" role="tab" data-tab="organs"><span class="n">2</span>배설 기관</button>
+    <button class="tab" role="tab" data-tab="nephron"><span class="n">3</span>오줌 생성 과정</button>
+    <button class="tab" role="tab" data-tab="compare"><span class="n">4</span>성분 비교</button>
+    <button class="tab" role="tab" data-tab="order"><span class="n">5</span>순서 맞히기</button>
+    <button class="tab" role="tab" data-tab="quiz"><span class="n">6</span>확인 퀴즈</button>
+  </div>
 </nav>
 
 <main>
 
-<!-- ================= 1. 통합 지도 ================= -->
-<section class="page active" id="p-map">
-  <div class="goal"><b>학습 목표</b> 소화계·순환계·호흡계·배설계가 <b>세포 호흡</b>을 중심으로 서로 어떻게 연결되는지 설명할 수 있다.</div>
-  <div class="explore">
-    <div class="card map-wrap">
-      <div class="map-bar">
-        <button class="chip-btn" id="flowBtn" aria-pressed="true">● 물질 흐름 움직이기</button>
-        <button class="chip-btn" id="resetBtn">↺ 전체 보기</button>
-      </div>
-      <div class="map-scroll">
-      <svg id="map" class="moving" viewBox="0 0 1000 720" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-label="소화계, 순환계, 호흡계, 배설계와 조직 세포의 관계도">
-        <defs>
-          <marker id="a-dig" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0L10 5L0 10z" fill="#d9822b"/></marker>
-          <marker id="a-o2" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2f74c0"/></marker>
-          <marker id="a-co2" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0L10 5L0 10z" fill="#6d6a63"/></marker>
-          <marker id="a-exc" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2e8f68"/></marker>
-          <marker id="a-mix" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0L10 5L0 10z" fill="#c8414b"/></marker>
-          <marker id="a-waste" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0L10 5L0 10z" fill="#8b6a4a"/></marker>
-        </defs>
+<!-- ================= 1. 노폐물의 생성 ================= -->
+<section class="page" id="intro">
+  <h2><span class="num">1</span>노폐물은 어디에서 생길까?</h2>
+  <p class="lead">세포가 영양소를 분해해 에너지를 얻는 과정(세포 호흡)에서 몸에 필요 없는 물질이 생겨요.</p>
 
-        <!-- 바깥 환경 -->
-        <rect x="8" y="8" width="984" height="704" rx="22" fill="none" stroke="#d8d0bb" stroke-width="2" stroke-dasharray="8 8"/>
-        <text x="30" y="40" class="outside" style="text-anchor:start">몸 밖 (외부 환경)</text>
+  <div class="box concept">
+    <span class="tag">개념 정리</span>
+    <p><span class="key">노폐물</span> : 세포 호흡 결과 생긴, 몸에 필요 없는 물질 → <b>이산화탄소, 물, 암모니아</b></p>
+    <p><span class="key">배설</span> : 혈액 속의 노폐물을 걸러 오줌이나 땀의 형태로 몸 밖으로 내보내는 과정</p>
+  </div>
 
-        <!-- 흐름 화살표 -->
-        <g class="flow" id="f-air-in">
-          <path id="p-air-in" class="ln" d="M300 40 Q 380 40 425 95" stroke="#2f74c0" marker-end="url(#a-o2)"/>
-          <text x="290" y="78" fill="#2f74c0" text-anchor="middle">들숨 (O₂ 많음)</text>
-        </g>
-        <g class="flow" id="f-air-out">
-          <path id="p-air-out" class="ln" d="M575 95 Q 620 40 700 40" stroke="#6d6a63" marker-end="url(#a-co2)"/>
-          <text x="720" y="78" fill="#6d6a63" text-anchor="middle">날숨 (CO₂·수증기)</text>
-        </g>
-        <g class="flow" id="f-food">
-          <path id="p-food" class="ln" d="M170 205 L 170 280" stroke="#d9822b" marker-end="url(#a-dig)"/>
-          <text x="170" y="192" fill="#d9822b" text-anchor="middle">음식물 섭취</text>
-        </g>
-        <g class="flow" id="f-feces">
-          <path id="p-feces" class="ln" d="M170 440 L 170 525" stroke="#8b6a4a" marker-end="url(#a-waste)"/>
-          <text x="170" y="555" fill="#8b6a4a" text-anchor="middle">대변 (배출)</text>
-          <text x="170" y="580" fill="#8b6a4a" text-anchor="middle" style="font-size:16px;font-weight:700">※ 배설이 아님!</text>
-        </g>
-        <g class="flow" id="f-dig-circ">
-          <path id="p-dig-circ" class="ln" d="M262 360 L 408 360" stroke="#d9822b" marker-end="url(#a-dig)"/>
-          <text x="335" y="342" fill="#d9822b" text-anchor="middle">영양소 흡수</text>
-          <text x="335" y="390" fill="#d9822b" text-anchor="middle" style="font-size:17px">소장 융털</text>
-        </g>
-        <g class="flow" id="f-lung-circ">
-          <path id="p-lung-circ" class="ln" d="M465 200 L 465 280" stroke="#2f74c0" marker-end="url(#a-o2)"/>
-          <text x="440" y="246" fill="#2f74c0" text-anchor="end">O₂</text>
-        </g>
-        <g class="flow" id="f-circ-lung">
-          <path id="p-circ-lung" class="ln" d="M535 280 L 535 200" stroke="#6d6a63" marker-end="url(#a-co2)"/>
-          <text x="560" y="246" fill="#6d6a63" text-anchor="start">CO₂</text>
-        </g>
-        <g class="flow" id="f-circ-cell">
-          <path id="p-circ-cell" class="ln" d="M465 440 L 465 545" stroke="#c8414b" marker-end="url(#a-mix)"/>
-          <text x="440" y="500" fill="#c8414b" text-anchor="end">영양소 · O₂</text>
-        </g>
-        <g class="flow" id="f-cell-circ">
-          <path id="p-cell-circ" class="ln" d="M535 545 L 535 440" stroke="#6d6a63" marker-end="url(#a-co2)"/>
-          <text x="560" y="490" fill="#6d6a63" text-anchor="start">CO₂ · 물</text>
-          <text x="560" y="516" fill="#2e8f68" text-anchor="start">요소 등 노폐물</text>
-        </g>
-        <g class="flow" id="f-circ-kid">
-          <path id="p-circ-kid" class="ln" d="M592 360 L 738 360" stroke="#2e8f68" marker-end="url(#a-exc)"/>
-          <text x="665" y="342" fill="#2e8f68" text-anchor="middle">요소 · 물</text>
-          <text x="665" y="390" fill="#2e8f68" text-anchor="middle" style="font-size:17px">혈액이 걸러짐</text>
-        </g>
-        <g class="flow" id="f-urine">
-          <path id="p-urine" class="ln" d="M830 440 L 830 525" stroke="#2e8f68" marker-end="url(#a-exc)"/>
-          <text x="830" y="555" fill="#2e8f68" text-anchor="middle">오줌 (배설)</text>
-        </g>
+  <div class="box inquiry">
+    <span class="tag">탐구 활동</span>
+    <p><b>영양소를 하나 골라 보세요.</b> 분해될 때 어떤 노폐물이 생기고, 어디로 나가는지 확인해 봅시다.</p>
+    <div class="btn-row nutri-btns">
+      <button class="btn" data-nutri="carb">🍚 탄수화물</button>
+      <button class="btn" data-nutri="fat">🧈 지방</button>
+      <button class="btn" data-nutri="protein">🥩 단백질</button>
+    </div>
+    <div id="flowOut" class="flow" aria-live="polite">
+      <p class="hint">위의 버튼을 눌러 보세요.</p>
+    </div>
+  </div>
 
-        <!-- 호흡계 -->
-        <g class="node" id="n-resp" data-sys="resp" tabindex="0" role="button" aria-label="호흡계">
-          <rect class="box" x="410" y="75" width="180" height="120" rx="18" stroke="#2f74c0"/>
-          <path d="M500 86 L500 108 M500 108 L486 116 M500 108 L514 116" stroke="#2f74c0" stroke-width="4" fill="none" stroke-linecap="round"/>
-          <path d="M490 112 C 470 108 462 130 466 146 C 470 158 488 156 492 146 Z" fill="#cfe0f3" stroke="#2f74c0" stroke-width="3"/>
-          <path d="M510 112 C 530 108 538 130 534 146 C 530 158 512 156 508 146 Z" fill="#cfe0f3" stroke="#2f74c0" stroke-width="3"/>
-          <text class="ttl" x="500" y="168" fill="#2f74c0">호흡계</text>
-          <text class="sub" x="500" y="189">코 · 숨관 · 폐</text>
-        </g>
-        <!-- 순환계 -->
-        <g class="node" id="n-circ" data-sys="circ" tabindex="0" role="button" aria-label="순환계">
-          <rect class="box" x="408" y="282" width="184" height="156" rx="18" stroke="#c8414b"/>
-          <path d="M500 372 C 466 348 460 318 482 310 C 493 306 500 316 500 322 C 500 316 507 306 518 310 C 540 318 534 348 500 372 Z" fill="#f4cdd0" stroke="#c8414b" stroke-width="3"/>
-          <text class="ttl" x="500" y="404" fill="#c8414b">순환계</text>
-          <text class="sub" x="500" y="425">심장 · 혈관 · 혈액</text>
-        </g>
-        <!-- 소화계 -->
-        <g class="node" id="n-dig" data-sys="dig" tabindex="0" role="button" aria-label="소화계">
-          <rect class="box" x="78" y="282" width="184" height="156" rx="18" stroke="#d9822b"/>
-          <path d="M150 300 C 135 304 138 330 160 332 C 182 334 192 318 186 304" fill="#f7dfc6" stroke="#d9822b" stroke-width="3"/>
-          <path d="M165 336 q 25 2 22 14 q -3 10 -30 8 q -22 0 -18 12 q 5 10 32 6" fill="none" stroke="#d9822b" stroke-width="4" stroke-linecap="round"/>
-          <text class="ttl" x="170" y="404" fill="#d9822b">소화계</text>
-          <text class="sub" x="170" y="425">입·위·소장·간·이자</text>
-        </g>
-        <!-- 배설계 -->
-        <g class="node" id="n-exc" data-sys="exc" tabindex="0" role="button" aria-label="배설계">
-          <rect class="box" x="738" y="282" width="184" height="156" rx="18" stroke="#2e8f68"/>
-          <ellipse cx="808" cy="320" rx="13" ry="21" fill="#cfe9dd" stroke="#2e8f68" stroke-width="3"/>
-          <ellipse cx="852" cy="320" rx="13" ry="21" fill="#cfe9dd" stroke="#2e8f68" stroke-width="3"/>
-          <path d="M814 338 L 826 360 M846 338 L 834 360" stroke="#2e8f68" stroke-width="3"/>
-          <ellipse cx="830" cy="366" rx="13" ry="8" fill="#cfe9dd" stroke="#2e8f68" stroke-width="3"/>
-          <text class="ttl" x="830" y="404" fill="#2e8f68">배설계</text>
-          <text class="sub" x="830" y="425">콩팥 · 오줌관 · 방광</text>
-        </g>
-        <!-- 조직 세포 -->
-        <g class="node" id="n-cell" data-sys="cell" tabindex="0" role="button" aria-label="조직 세포">
-          <rect class="box" x="380" y="547" width="240" height="140" rx="18" stroke="#7a5bb5"/>
-          <circle cx="500" cy="584" r="26" fill="#e7e0f4" stroke="#7a5bb5" stroke-width="3"/>
-          <circle cx="494" cy="580" r="9" fill="#7a5bb5"/>
-          <ellipse cx="511" cy="594" rx="8" ry="4" fill="none" stroke="#7a5bb5" stroke-width="2.5"/>
-          <text class="ttl" x="500" y="645" fill="#7a5bb5">조직 세포</text>
-          <text class="sub" x="500" y="668">세포 호흡 → 에너지 생성</text>
-        </g>
-      </svg>
+  <div class="box think">
+    <span class="tag">생각해 보기</span>
+    <p>탄수화물·지방과 달리 <b>단백질</b>에서만 생기는 노폐물은 무엇일까요? 그 이유는?</p>
+    <button class="btn" data-reveal="r1">정답 보기</button>
+    <div class="reveal" id="r1">암모니아예요. 단백질에는 <b>질소(N)</b>가 들어 있어서, 분해될 때 질소가 포함된 노폐물인 암모니아가 생겨요. 탄수화물과 지방은 탄소·수소·산소로만 이루어져 있어요.</div>
+  </div>
+
+  <div class="box warn">
+    <span class="tag">오개념 주의</span>
+    <p>소화되지 않은 음식물 찌꺼기를 <b>대변</b>으로 내보내는 것은 <b>배설이 아니에요.</b> 대변은 세포 호흡으로 생긴 노폐물이 아니라 몸에 흡수되지 않은 물질이기 때문이에요. (이것은 '배출'이라고 해요.)</p>
+  </div>
+
+  <div class="next-wrap"><button class="btn primary" data-go="organs">다음: 배설 기관 →</button></div>
+</section>
+
+<!-- ================= 2. 배설 기관 ================= -->
+<section class="page" id="organs" hidden>
+  <h2><span class="num">2</span>배설 기관을 살펴보자</h2>
+  <p class="lead">그림에서 기관이나 이름을 눌러 하는 일을 확인하세요. 이름을 가리고 맞혀 볼 수도 있어요.</p>
+
+  <div class="btn-row">
+    <button class="btn on" id="viewBody">🧍 배설 기관 전체</button>
+    <button class="btn" id="viewKidney">🫘 콩팥 단면</button>
+    <button class="btn" id="toggleLabels">🙈 이름 가리기</button>
+  </div>
+
+  <div class="two">
+    <div>
+      <!-- 배설 기관 전체 -->
+      <div class="svgwrap" id="bodyWrap">
+        <svg id="bodySvg" viewBox="0 0 560 520" role="img" aria-label="배설 기관 그림">
+          <g transform="translate(80 0)">
+            <path d="M140 20 C140 50 120 60 90 70 C60 80 55 110 55 150 L60 330 C62 400 90 470 130 510 L270 510 C310 470 338 400 340 330 L345 150 C345 110 340 80 310 70 C280 60 260 50 260 20 Z" fill="#f6e7d8" stroke="#d9bfa5" stroke-width="3"/>
+            <!-- 대정맥, 대동맥 -->
+            <g class="part" data-part="vena"><rect x="178" y="40" width="18" height="330" rx="9" fill="#4a78b5"/></g>
+            <g class="part" data-part="aorta"><rect x="203" y="40" width="16" height="330" rx="8" fill="#d9534f"/></g>
+            <!-- 콩팥 동맥 -->
+            <g class="part" data-part="rartery">
+              <path d="M205 170 L118 170" stroke="#d9534f" stroke-width="8" stroke-linecap="round" fill="none"/>
+              <path d="M217 170 L282 170" stroke="#d9534f" stroke-width="8" stroke-linecap="round" fill="none"/>
+            </g>
+            <!-- 콩팥 정맥 -->
+            <g class="part" data-part="rvein">
+              <path d="M182 192 L118 192" stroke="#4a78b5" stroke-width="9" stroke-linecap="round" fill="none"/>
+              <path d="M192 192 L282 192" stroke="#4a78b5" stroke-width="9" stroke-linecap="round" fill="none"/>
+            </g>
+            <!-- 오줌관 -->
+            <g class="part" data-part="ureter">
+              <path d="M118 205 C140 260 170 330 182 385" stroke="#d4a72c" stroke-width="7" stroke-linecap="round" fill="none"/>
+              <path d="M282 205 C260 260 230 330 218 385" stroke="#d4a72c" stroke-width="7" stroke-linecap="round" fill="none"/>
+            </g>
+            <!-- 콩팥 -->
+            <g class="part" data-part="kidney">
+              <path d="M95 130 C60 130 55 230 95 235 C120 238 135 215 125 195 C118 185 118 175 125 165 C135 145 125 128 95 130 Z" fill="#a8473f" stroke="#7d2f29" stroke-width="2"/>
+              <path d="M95 130 C60 130 55 230 95 235 C120 238 135 215 125 195 C118 185 118 175 125 165 C135 145 125 128 95 130 Z" fill="#a8473f" stroke="#7d2f29" stroke-width="2" transform="translate(400 0) scale(-1 1)"/>
+            </g>
+            <!-- 방광 -->
+            <g class="part" data-part="bladder"><ellipse cx="200" cy="405" rx="42" ry="30" fill="#f2d675" stroke="#c9a646" stroke-width="2"/></g>
+            <!-- 요도 -->
+            <g class="part" data-part="urethra"><rect x="194" y="432" width="12" height="55" rx="5" fill="#e8c35a" stroke="#c9a646" stroke-width="1.5"/></g>
+          </g>
+          <!-- 이름표 (절대 좌표) -->
+          <line class="lead-line" x1="128" y1="184" x2="150" y2="184"/>
+          <text class="lbl" data-part="kidney" x="124" y="190" text-anchor="end">콩팥</text>
+          <line class="lead-line" x1="128" y1="296" x2="230" y2="300"/>
+          <text class="lbl" data-part="ureter" x="124" y="302" text-anchor="end">오줌관</text>
+          <line class="lead-line" x1="128" y1="400" x2="238" y2="404"/>
+          <text class="lbl" data-part="bladder" x="124" y="406" text-anchor="end">방광</text>
+          <line class="lead-line" x1="128" y1="466" x2="274" y2="466"/>
+          <text class="lbl" data-part="urethra" x="124" y="472" text-anchor="end">요도</text>
+          <line class="lead-line" x1="345" y1="100" x2="330" y2="166"/>
+          <text class="lbl" data-part="rartery" x="335" y="94">콩팥 동맥</text>
+          <line class="lead-line" x1="338" y1="246" x2="322" y2="196"/>
+          <text class="lbl" data-part="rvein" x="320" y="266">콩팥 정맥</text>
+          <text class="lbl sm" data-part="aorta" x="300" y="34">대동맥</text>
+          <text class="lbl sm" data-part="vena" x="262" y="34" text-anchor="end">대정맥</text>
+        </svg>
       </div>
-      <p class="hint map-swipe">↔ 지도를 옆으로 밀어서 볼 수 있어요.</p>
-      <div class="legend">
-        <span style="--c:#d9822b">영양소</span>
-        <span style="--c:#2f74c0">산소(O₂)</span>
-        <span style="--c:#6d6a63">이산화 탄소(CO₂)</span>
-        <span style="--c:#2e8f68">요소 등 노폐물</span>
-        <span style="--c:#c8414b">혈액이 운반</span>
+
+      <!-- 콩팥 단면 -->
+      <div class="svgwrap" id="kidneyWrap" hidden>
+        <svg id="kidneySvg" viewBox="0 0 520 420" role="img" aria-label="콩팥 단면 그림">
+          <g class="part" data-part="cortex">
+            <path d="M200 30 C70 30 40 210 80 300 C115 390 250 390 270 330 C285 290 262 262 268 230 C274 198 292 168 280 125 C268 70 245 30 200 30 Z" fill="#cf7a68" stroke="#8c3c32" stroke-width="3"/>
+          </g>
+          <g class="part" data-part="medulla" fill="#8f3a33">
+            <polygon points="105,110 165,68 228,182"/>
+            <polygon points="72,185 92,262 222,216"/>
+            <polygon points="105,305 170,338 228,252"/>
+          </g>
+          <g class="part" data-part="rartery"><path d="M262 205 C300 195 330 178 362 168" stroke="#d9534f" stroke-width="11" stroke-linecap="round" fill="none"/></g>
+          <g class="part" data-part="rvein"><path d="M262 222 C300 224 330 225 362 225" stroke="#4a78b5" stroke-width="13" stroke-linecap="round" fill="none"/></g>
+          <g class="part" data-part="ureter"><path d="M262 240 C300 250 312 300 320 412" stroke="#d4a72c" stroke-width="16" stroke-linecap="round" fill="none"/></g>
+          <g class="part" data-part="pelvis">
+            <path d="M268 210 C250 196 236 180 222 178 L234 216 L220 256 C238 252 252 246 268 246 Z" fill="#f2d675" stroke="#c9a646" stroke-width="2"/>
+          </g>
+          <g class="part" data-part="nephron">
+            <circle cx="88" cy="148" r="15" fill="rgba(255,255,255,.35)" stroke="#fff" stroke-width="3" stroke-dasharray="5 3"/>
+          </g>
+          <line class="lead-line" x1="386" y1="50" x2="228" y2="42"/>
+          <text class="lbl" data-part="cortex" x="392" y="56">겉질</text>
+          <line class="lead-line" x1="386" y1="110" x2="198" y2="128"/>
+          <text class="lbl" data-part="medulla" x="392" y="116">속질</text>
+          <line class="lead-line" x1="386" y1="160" x2="362" y2="166"/>
+          <text class="lbl" data-part="rartery" x="392" y="166">콩팥 동맥</text>
+          <line class="lead-line" x1="386" y1="225" x2="366" y2="225"/>
+          <text class="lbl" data-part="rvein" x="392" y="231">콩팥 정맥</text>
+          <line class="lead-line" x1="386" y1="290" x2="250" y2="238"/>
+          <text class="lbl" data-part="pelvis" x="392" y="296">콩팥 깔때기</text>
+          <line class="lead-line" x1="386" y1="370" x2="320" y2="370"/>
+          <text class="lbl" data-part="ureter" x="392" y="376">오줌관</text>
+          <line class="lead-line" x1="40" y1="30" x2="84" y2="134"/>
+          <text class="lbl" data-part="nephron" x="10" y="24">네프론</text>
+        </svg>
       </div>
+      <p class="hint">💡 그림 속 기관이나 이름표를 눌러 보세요.</p>
     </div>
 
-    <div class="side">
-      <div class="mode-switch">
-        <button id="modeSys" aria-pressed="true">🔍 기관계 살펴보기</button>
-        <button id="modeTrip" aria-pressed="false">🚶 물질의 여행</button>
+    <div class="sticky">
+      <div class="box info" id="partInfo" aria-live="polite">
+        <span class="tag" style="background:var(--muted)">설명</span>
+        <p>왼쪽 그림에서 알고 싶은 기관을 눌러 보세요.</p>
       </div>
-
-      <div class="card info" id="sysPanel"></div>
-
-      <div class="card" id="tripPanel" hidden>
-        <div class="journey-pick" id="tripPick"></div>
-        <div class="step-box" id="stepBox">
-          <p class="hint">위에서 따라갈 물질을 골라 보세요. 지도에서 그 물질이 지나는 길만 밝게 표시됩니다.</p>
-        </div>
+      <div class="box concept">
+        <span class="tag">개념 정리</span>
+        <p><b>오줌이 나가는 길</b><br>콩팥 → 오줌관 → 방광 → 요도 → 몸 밖</p>
+        <p><b>혈액이 지나는 길</b><br>콩팥 동맥(노폐물 많음) → 콩팥 → 콩팥 정맥(노폐물 적음)</p>
       </div>
     </div>
   </div>
+
+  <div class="next-wrap"><button class="btn primary" data-go="nephron">다음: 오줌 생성 과정 →</button></div>
 </section>
 
-<!-- ================= 2. 운동 실험실 ================= -->
-<section class="page" id="p-lab">
-  <div class="goal"><b>탐구 질문</b> 달리기를 하면 왜 숨이 차고 심장이 빨리 뛸까? — 운동 강도를 바꾸며 네 기관계의 변화를 관찰해 보세요.</div>
-  <div class="lab">
-    <div class="card">
-      <h2 class="serif" style="margin:0">운동 강도 조절</h2>
-      <div class="level-name" id="levelName">휴식</div>
-      <div class="slider-row">
-        <input type="range" id="intensity" min="0" max="100" value="0" aria-label="운동 강도">
-        <div class="ticks"><span>휴식</span><span>걷기</span><span>달리기</span><span>전력 질주</span></div>
+<!-- ================= 3. 네프론 ================= -->
+<section class="page" id="nephron" hidden>
+  <h2><span class="num">3</span>네프론에서 오줌이 만들어지는 과정</h2>
+  <p class="lead"><b>네프론</b>은 오줌을 만드는 기본 단위로, 사구체·보먼주머니·세뇨관으로 이루어져 있어요. 콩팥 하나에 약 100만 개가 있어요.</p>
+
+  <div class="step-dots" id="stepDots"></div>
+
+  <div class="two">
+    <div>
+      <div class="svgwrap wide">
+        <svg id="nephronSvg" viewBox="0 0 640 450" data-step="0" role="img" aria-label="네프론에서 여과, 재흡수, 분비가 일어나는 모습">
+          <defs>
+            <marker id="arG" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#2f6b4f"/></marker>
+            <marker id="arO" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#b8621b"/></marker>
+            <marker id="arB" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#2c5d8f"/></marker>
+          </defs>
+          <!-- 세뇨관 + 집합관 -->
+          <path d="M172 172 C192 200 200 200 220 200 L490 200 C520 200 520 215 520 235 L520 415" stroke="#c9a646" stroke-width="30" fill="none" stroke-linecap="round"/>
+          <path d="M172 172 C192 200 200 200 220 200 L490 200 C520 200 520 215 520 235 L520 415" stroke="#f7ebc0" stroke-width="24" fill="none" stroke-linecap="round"/>
+          <!-- 들어오는 혈관 / 모세혈관 -->
+          <path d="M0 115 L80 118" stroke="#a83226" stroke-width="22" fill="none"/>
+          <path d="M0 115 L80 118" stroke="#f5b7ae" stroke-width="16" fill="none"/>
+          <path d="M80 146 C40 170 40 270 110 270 L450 270 C470 270 470 290 470 300 L470 415" stroke="#a83226" stroke-width="24" fill="none"/>
+          <path d="M80 146 C40 170 40 270 110 270 L450 270 C470 270 470 290 470 300 L470 415" stroke="#f5b7ae" stroke-width="18" fill="none"/>
+          <!-- 보먼주머니 -->
+          <path d="M86 86 A62 62 0 1 1 86 174" stroke="#c9a646" stroke-width="24" fill="none"/>
+          <path d="M86 86 A62 62 0 1 1 86 174" stroke="#f7ebc0" stroke-width="18" fill="none"/>
+          <!-- 사구체 -->
+          <circle cx="130" cy="130" r="42" fill="#f8d3cc" stroke="#c0392b" stroke-width="3"/>
+          <path d="M100 110 C120 90 150 95 150 115 C150 135 110 125 112 145 C114 165 160 160 158 140" stroke="#d96b5e" stroke-width="5" fill="none" opacity=".55"/>
+
+          <!-- 단계 표시 -->
+          <g class="s-filt">
+            <path d="M168 120 L200 108" stroke="#2c5d8f" stroke-width="4" marker-end="url(#arB)"/>
+            <text class="lbl" x="206" y="112" style="fill:#2c5d8f">여과</text>
+          </g>
+          <g class="s-reab">
+            <path d="M260 216 L260 252" stroke="#2f6b4f" stroke-width="5" marker-end="url(#arG)"/>
+            <path d="M340 216 L340 252" stroke="#2f6b4f" stroke-width="5" marker-end="url(#arG)"/>
+            <path d="M420 216 L420 252" stroke="#2f6b4f" stroke-width="5" marker-end="url(#arG)"/>
+            <text class="lbl" x="250" y="242" text-anchor="end" style="fill:#2f6b4f">재흡수</text>
+          </g>
+          <g class="s-secr">
+            <path d="M300 254 L300 218" stroke="#b8621b" stroke-width="5" marker-end="url(#arO)"/>
+            <path d="M380 254 L380 218" stroke="#b8621b" stroke-width="5" marker-end="url(#arO)"/>
+            <text class="lbl" x="250" y="242" text-anchor="end" style="fill:#b8621b">분비</text>
+          </g>
+          <g class="s-out">
+            <path d="M560 300 L560 380" stroke="#b8621b" stroke-width="5" marker-end="url(#arO)"/>
+          </g>
+
+          <!-- 이름표 -->
+          <text class="lbl sm" x="4" y="98">콩팥 동맥에서</text>
+          <line class="lead-line" x1="130" y1="44" x2="130" y2="88"/>
+          <text class="lbl" x="130" y="38" text-anchor="middle">사구체</text>
+          <line class="lead-line" x1="232" y1="62" x2="186" y2="96"/>
+          <text class="lbl" x="236" y="66">보먼주머니</text>
+          <text class="lbl" x="330" y="178" text-anchor="middle">세뇨관</text>
+          <text class="lbl" x="300" y="312" text-anchor="middle">모세혈관</text>
+          <text class="lbl" x="540" y="262">집합관</text>
+          <text class="lbl sm" x="480" y="440" text-anchor="end">콩팥 정맥으로 →</text>
+          <text class="lbl sm" x="510" y="440">오줌 →</text>
+
+          <g id="particles"></g>
+        </svg>
       </div>
-      <div class="anim-row">
-        <figure><span class="heart-ic" id="heartIc">❤</span><figcaption>심장 박동</figcaption></figure>
-        <figure><span class="lung-ic" id="lungIc"><svg width="70" height="64" viewBox="0 0 70 64"><path d="M35 4 L35 22 M35 22 L24 30 M35 22 L46 30" stroke="#2f74c0" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M28 26 C 10 22 2 44 6 56 C 10 64 26 62 30 54 Z" fill="#cfe0f3" stroke="#2f74c0" stroke-width="3"/><path d="M42 26 C 60 22 68 44 64 56 C 60 64 44 62 40 54 Z" fill="#cfe0f3" stroke="#2f74c0" stroke-width="3"/></svg></span><figcaption>호흡</figcaption></figure>
+      <div class="legend" id="legend"></div>
+      <div class="btn-row">
+        <button class="btn" id="prevStep">◀ 이전</button>
+        <button class="btn primary" id="nextStep">다음 ▶</button>
+        <button class="btn" id="autoPlay">▶ 자동 재생</button>
+        <button class="btn" id="resetStep">↺ 처음부터</button>
       </div>
-      <div class="gauges">
-        <div class="gauge"><div class="lbl">심장 박동 수</div><div class="val" id="gHeart">70 <small>회/분</small></div><div class="bar"><i id="bHeart" style="background:var(--circ)"></i></div></div>
-        <div class="gauge"><div class="lbl">호흡 수</div><div class="val" id="gBreath">15 <small>회/분</small></div><div class="bar"><i id="bBreath" style="background:var(--resp)"></i></div></div>
-        <div class="gauge"><div class="lbl">근육 세포의 세포 호흡</div><div class="val" id="gResp">×1 <small>휴식 대비</small></div><div class="bar"><i id="bResp" style="background:var(--cell)"></i></div></div>
-        <div class="gauge"><div class="lbl">땀 배출 (체온 조절)</div><div class="val" id="gSweat">적음</div><div class="bar"><i id="bSweat" style="background:var(--exc)"></i></div></div>
-      </div>
-      <p class="hint" style="margin-top:0.6rem">※ 수치는 이해를 돕기 위한 대략적인 예시값이며, 사람마다 다릅니다.</p>
     </div>
 
-    <div class="card">
-      <h2 class="serif" style="margin:0 0 0.3rem">무슨 일이 일어날까? (원인 → 결과)</h2>
-      <ol class="chain" id="chain">
-        <li data-min="0"><span class="tag" style="background:var(--cell)">세포</span>근육 세포가 움직이려면 <b>에너지</b>가 필요하다.</li>
-        <li data-min="20"><span class="tag" style="background:var(--cell)">세포</span>에너지를 더 얻기 위해 <b>세포 호흡</b>이 활발해진다. (영양소 + 산소 → 이산화 탄소 + 물 + 에너지)</li>
-        <li data-min="30"><span class="tag" style="background:var(--resp)">호흡</span>산소를 더 받아들이고 이산화 탄소를 더 내보내려고 <b>호흡이 빠르고 깊어진다.</b></li>
-        <li data-min="30"><span class="tag" style="background:var(--circ)">순환</span>산소와 영양소를 빨리 나르고 이산화 탄소를 빨리 치우려고 <b>심장 박동이 빨라진다.</b></li>
-        <li data-min="55"><span class="tag" style="background:var(--dig)">소화</span>저장해 둔 영양소를 사용하며, 운동 후에는 <b>영양소 보충</b>이 필요해진다.</li>
-        <li data-min="55"><span class="tag" style="background:var(--exc)">배설</span>세포 호흡에서 열이 많이 나 <b>땀</b>을 흘리고, 물이 부족해져 오줌의 양은 줄어든다.</li>
-      </ol>
-      <div class="think" id="labThink"><b>생각해 보기</b> 휴식할 때도 심장은 뛰고 숨을 쉽니다. 왜 그럴까요?</div>
+    <div class="sticky">
+      <div class="box concept" id="stepBox" aria-live="polite">
+        <span class="tag" id="stepTag">단계</span>
+        <h3 id="stepTitle" style="margin-top:4px"></h3>
+        <p id="stepText"></p>
+      </div>
+      <table aria-label="물질의 위치">
+        <thead><tr><th>물질</th><th>혈관 쪽</th><th>세뇨관·오줌 쪽</th></tr></thead>
+        <tbody id="countBody"></tbody>
+      </table>
+      <p class="hint">알갱이 수는 이해를 돕기 위한 모형이에요. 실제 양과는 달라요.</p>
     </div>
   </div>
-</section>
 
-<!-- ================= 3. 용어 분류 ================= -->
-<section class="page" id="p-sort">
-  <div class="goal"><b>활동 방법</b> ① 아래 용어 카드를 누르고 ② 알맞은 기관계 상자를 누르세요. 모든 카드를 옮기면 완성!</div>
-  <div class="card">
-    <div class="scoreline">
-      <div><b>남은 카드</b> <span id="leftCnt">0</span>장 · <b>정답</b> <span id="okCnt">0</span> · <b>다시 시도</b> <span id="badCnt">0</span></div>
-      <button class="big-btn ghost" id="sortReset" style="flex:none">↺ 처음부터</button>
-    </div>
-    <div class="terms" id="terms"></div>
-    <div class="feedback" id="sortFb" aria-live="polite">카드를 하나 골라 보세요.</div>
-    <div class="bins" id="bins"></div>
+  <div class="box concept">
+    <span class="tag">개념 정리</span>
+    <ul>
+      <li><b>여과</b> : 사구체 → 보먼주머니. 크기가 작은 물질(물, 포도당, 아미노산, 무기염류, 요소)이 빠져나감. 혈구·단백질은 여과되지 않음.</li>
+      <li><b>재흡수</b> : 세뇨관 → 모세혈관. 포도당·아미노산은 <b>전부</b>, 물·무기염류는 <b>대부분</b> 다시 흡수됨.</li>
+      <li><b>분비</b> : 모세혈관 → 세뇨관. 미처 여과되지 않은 노폐물이 세뇨관으로 이동함.</li>
+    </ul>
   </div>
+
+  <div class="next-wrap"><button class="btn primary" data-go="compare">다음: 성분 비교 →</button></div>
 </section>
 
-<!-- ================= 4. 퀴즈 ================= -->
-<section class="page" id="p-quiz">
-  <div class="card quiz" id="quizBox"></div>
+<!-- ================= 4. 성분 비교 ================= -->
+<section class="page" id="compare" hidden>
+  <h2><span class="num">4</span>혈장·여과액·오줌의 성분 비교</h2>
+  <p class="lead">표의 한 줄을 눌러 세 액체 속 농도를 막대로 비교하고, 그 까닭을 생각해 보세요.</p>
+
+  <div class="two">
+    <div>
+      <table class="cmp" aria-label="성분 비교 표">
+        <thead><tr><th>성분<br><small>(g/100mL)</small></th><th>혈장</th><th>여과액<br><small>(보먼주머니)</small></th><th>오줌</th></tr></thead>
+        <tbody id="cmpBody"></tbody>
+      </table>
+      <p class="hint">※ 수치는 교과서마다 조금씩 다를 수 있어요.</p>
+    </div>
+    <div class="sticky">
+      <div class="box inquiry" id="cmpInfo" aria-live="polite">
+        <span class="tag">탐구 활동</span>
+        <p>왼쪽 표에서 성분을 하나 골라 보세요.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="box think">
+    <span class="tag">생각해 보기 ①</span>
+    <p>어떤 사람의 오줌에서 <b>포도당</b>이 검출되었어요. 왜 그럴까요?</p>
+    <button class="btn" data-reveal="r2">정답 보기</button>
+    <div class="reveal" id="r2">혈액 속 포도당 농도(혈당)가 너무 높으면, 세뇨관이 포도당을 모두 재흡수하지 못해 오줌으로 나올 수 있어요. 당뇨병이 대표적인 예예요.</div>
+  </div>
+  <div class="box think">
+    <span class="tag">생각해 보기 ②</span>
+    <p>오줌에서 <b>단백질</b>이 검출된다면, 네프론의 어느 부분에 문제가 생겼다고 볼 수 있을까요?</p>
+    <button class="btn" data-reveal="r3">정답 보기</button>
+    <div class="reveal" id="r3">사구체예요. 정상이라면 단백질은 크기가 커서 여과되지 않는데, 사구체가 손상되면 단백질이 보먼주머니로 빠져나가 오줌에 섞일 수 있어요.</div>
+  </div>
+
+  <div class="next-wrap"><button class="btn primary" data-go="order">다음: 순서 맞히기 →</button></div>
+</section>
+
+<!-- ================= 5. 순서 맞히기 ================= -->
+<section class="page" id="order" hidden>
+  <h2><span class="num">5</span>순서 맞히기 게임</h2>
+  <p class="lead">아래 낱말 카드를 <b>순서대로</b> 눌러 빈칸을 채워 보세요. 필요 없는 카드도 섞여 있어요!</p>
+
+  <div class="btn-row">
+    <button class="btn on" data-mode="urine">💧 오줌이 나가는 길</button>
+    <button class="btn" data-mode="blood">🩸 혈액이 지나는 길</button>
+  </div>
+  <div class="box inquiry">
+    <span class="tag">도전</span>
+    <p id="orderQ"></p>
+    <div class="slots" id="slots"></div>
+    <div class="msg" id="orderMsg" aria-live="polite"></div>
+    <div class="pool" id="pool"></div>
+    <div class="btn-row"><button class="btn" id="orderReset">↺ 다시 하기</button></div>
+  </div>
+
+  <div class="next-wrap"><button class="btn primary" data-go="quiz">다음: 확인 퀴즈 →</button></div>
+</section>
+
+<!-- ================= 6. 퀴즈 ================= -->
+<section class="page" id="quiz" hidden>
+  <h2><span class="num">6</span>확인 퀴즈</h2>
+  <p class="lead">배운 내용을 10문제로 확인해 봅시다. 문제와 보기 순서는 매번 바뀌어요.</p>
+  <div class="quiz-card" id="quizCard" aria-live="polite"></div>
 </section>
 
 </main>
 
-<footer>중학교 과학 「동물과 에너지」 단원 수업용 · 저장 기능 없음(새로고침하면 처음 상태로 돌아갑니다)</footer>
+<footer>배설계 탐구실 · 수업용 학습 자료 · 입력한 내용은 저장되지 않으며 새로고침하면 처음 상태로 돌아갑니다.</footer>
 
 <script>
-(function () {
-  "use strict";
-  var $ = function (s, r) { return (r || document).querySelector(s); };
-  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+(function(){
+"use strict";
+var NS = "http://www.w3.org/2000/svg";
+function $(s, r){ return (r||document).querySelector(s); }
+function $$(s, r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); }
+function shuffle(a){ a = a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
 
-  /* ---------- 글자 크기 · 전체 화면 ---------- */
-  var sizes = [16, 18, 20, 23, 26, 30];
-  var sizeIdx = window.innerWidth < 600 ? 1 : 2;
-  function applySize() { document.documentElement.style.setProperty("--fs", sizes[sizeIdx] + "px"); }
-  $("#fontUp").onclick = function () { if (sizeIdx < sizes.length - 1) { sizeIdx++; applySize(); } };
-  $("#fontDown").onclick = function () { if (sizeIdx > 0) { sizeIdx--; applySize(); } };
-  $("#fullBtn").onclick = function () {
-    var d = document, el = d.documentElement;
-    if (!d.fullscreenElement && !d.webkitFullscreenElement) {
-      (el.requestFullscreen || el.webkitRequestFullscreen || function(){}).call(el);
-    } else {
-      (d.exitFullscreen || d.webkitExitFullscreen || function(){}).call(d);
-    }
-  };
-
-  /* ---------- 탭 ---------- */
-  $$(".tab").forEach(function (t) {
-    t.onclick = function () {
-      $$(".tab").forEach(function (x) { x.setAttribute("aria-selected", x === t ? "true" : "false"); });
-      $$(".page").forEach(function (p) { p.classList.toggle("active", p.id === t.dataset.page); });
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    };
+/* ---------- 탭 ---------- */
+var tabs = $$(".tab"), pages = $$(".page");
+function showTab(id, scroll){
+  if(!document.getElementById(id) || !document.getElementById(id).classList.contains("page")) id = "intro";
+  tabs.forEach(function(t){
+    var on = t.dataset.tab === id;
+    t.setAttribute("aria-selected", on);
+    if(on && t.scrollIntoView) t.scrollIntoView({inline:"center", block:"nearest"});
   });
+  pages.forEach(function(p){ p.hidden = p.id !== id; });
+  try{ history.replaceState(null, "", "#" + id); }catch(e){}
+  if(scroll) window.scrollTo(0, 0);
+  if(id !== "nephron") stopAuto();
+}
+tabs.forEach(function(t){ t.addEventListener("click", function(){ showTab(t.dataset.tab, true); }); });
+$$("[data-go]").forEach(function(b){ b.addEventListener("click", function(){ showTab(b.dataset.go, true); }); });
 
-  /* ---------- 지도: 움직이는 점 ---------- */
-  var svg = $("#map");
-  var NS = "http://www.w3.org/2000/svg", XL = "http://www.w3.org/1999/xlink";
-  $$(".flow", svg).forEach(function (g) {
-    var path = $("path.ln", g);
-    var color = path.getAttribute("stroke");
-    for (var i = 0; i < 3; i++) {
-      var c = document.createElementNS(NS, "circle");
-      c.setAttribute("r", "7"); c.setAttribute("fill", color); c.setAttribute("stroke", "#fff"); c.setAttribute("stroke-width", "2");
-      c.setAttribute("class", "dot");
-      var am = document.createElementNS(NS, "animateMotion");
-      am.setAttribute("dur", "2.4s"); am.setAttribute("repeatCount", "indefinite"); am.setAttribute("begin", (-0.8 * i) + "s");
-      var mp = document.createElementNS(NS, "mpath");
-      mp.setAttribute("href", "#" + path.id); mp.setAttributeNS(XL, "xlink:href", "#" + path.id);
-      am.appendChild(mp); c.appendChild(am); g.appendChild(c);
-    }
+/* ---------- 글자 크기 / 전체 화면 ---------- */
+var fs = parseFloat(getComputedStyle(document.documentElement).fontSize) || 18;
+function setFs(v){ fs = Math.max(14, Math.min(30, v)); document.documentElement.style.fontSize = fs + "px"; }
+$("#fsUp").addEventListener("click", function(){ setFs(fs + 2); });
+$("#fsDown").addEventListener("click", function(){ setFs(fs - 2); });
+var fullBtn = $("#fullBtn"), de = document.documentElement;
+if(!(de.requestFullscreen || de.webkitRequestFullscreen)) fullBtn.style.display = "none";
+fullBtn.addEventListener("click", function(){
+  if(document.fullscreenElement || document.webkitFullscreenElement){
+    (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+  } else {
+    (de.requestFullscreen || de.webkitRequestFullscreen).call(de);
+  }
+});
+
+/* ---------- 정답 보기 ---------- */
+$$("[data-reveal]").forEach(function(b){
+  b.addEventListener("click", function(){
+    var r = document.getElementById(b.dataset.reveal);
+    var show = !r.classList.contains("show");
+    r.classList.toggle("show", show);
+    b.textContent = show ? "정답 숨기기" : "정답 보기";
   });
-  $("#flowBtn").onclick = function () {
-    var on = svg.classList.toggle("moving");
-    this.setAttribute("aria-pressed", on ? "true" : "false");
-  };
+});
 
-  /* ---------- 기관계 정보 ---------- */
-  var SYS = {
-    dig: { name: "소화계", color: "#d9822b",
-      role: "음식물 속 큰 영양소를 작게 분해(소화)하여 몸속으로 흡수한다.",
-      organs: ["입", "식도", "위", "소장", "대장", "항문", "간·쓸개", "이자"],
-      points: [
-        "<b>녹말</b> → 엿당(입: 침 속 아밀레이스) → <b>포도당</b>(소장: 이자액·소장의 소화 효소)",
-        "<b>단백질</b> → (위: 펩신) → (소장: 트립신 등) → <b>아미노산</b>",
-        "<b>지방</b> → 쓸개즙이 지방을 작은 알갱이로 만들고 → 라이페이스 → <b>지방산 + 모노글리세리드</b>",
-        "흡수: 소장 <b>융털</b> — 수용성 영양소는 모세 혈관, 지용성 영양소는 암죽관으로"
-      ],
-      connect: "흡수한 영양소를 <b>순환계</b>에 넘겨 주어 온몸의 세포로 보낸다." },
-    circ: { name: "순환계", color: "#c8414b",
-      role: "혈액을 온몸으로 순환시켜 물질을 운반한다. 네 기관계를 잇는 '운반 도로'!",
-      organs: ["심장(2심방 2심실)", "동맥", "정맥", "모세 혈관", "혈액"],
-      points: [
-        "<b>온몸 순환</b>: 좌심실 → 대동맥 → 온몸 모세 혈관 → 대정맥 → 우심방",
-        "<b>폐순환</b>: 우심실 → 폐동맥 → 폐 모세 혈관 → 폐정맥 → 좌심방",
-        "<b>적혈구</b>(헤모글로빈)는 산소를, <b>혈장</b>은 영양소·이산화 탄소·노폐물을 운반",
-        "<b>판막</b>은 혈액이 거꾸로 흐르는 것을 막는다."
-      ],
-      connect: "소화계의 영양소, 호흡계의 산소를 <b>세포</b>에 전달하고, 세포의 CO₂는 <b>호흡계</b>로, 노폐물은 <b>배설계</b>로 운반한다." },
-    resp: { name: "호흡계", color: "#2f74c0",
-      role: "몸 밖의 산소를 받아들이고, 몸속의 이산화 탄소를 내보낸다(기체 교환).",
-      organs: ["코", "숨관", "숨관가지", "폐(허파꽈리)", "갈비뼈", "가로막"],
-      points: [
-        "<b>들숨</b>: 갈비뼈 ↑, 가로막 ↓ → 흉강 부피 ↑ → 폐 내부 압력 ↓ → 공기가 들어옴",
-        "<b>날숨</b>: 갈비뼈 ↓, 가로막 ↑ → 흉강 부피 ↓ → 폐 내부 압력 ↑ → 공기가 나감",
-        "수많은 <b>허파꽈리</b> 덕분에 공기와 닿는 표면적이 넓어 기체 교환이 효율적",
-        "기체 교환은 <b>확산</b>: O₂ 허파꽈리 → 모세 혈관, CO₂ 모세 혈관 → 허파꽈리"
-      ],
-      connect: "세포 호흡에 필요한 <b>산소</b>를 혈액에 공급하고, 세포 호흡으로 생긴 <b>이산화 탄소</b>를 몸 밖으로 내보낸다." },
-    exc: { name: "배설계", color: "#2e8f68",
-      role: "세포 호흡 결과 생긴 노폐물을 걸러 몸 밖으로 내보낸다(배설).",
-      organs: ["콩팥", "오줌관", "방광", "요도", "콩팥단위(토리·보먼주머니·세뇨관)"],
-      points: [
-        "탄수화물·지방 → CO₂ + 물 / 단백질 → CO₂ + 물 + <b>암모니아</b>",
-        "독성이 강한 암모니아는 <b>간</b>에서 독성이 약한 <b>요소</b>로 바뀐다.",
-        "<b>여과</b>(토리 → 보먼주머니) → <b>재흡수</b>(세뇨관 → 모세 혈관: 포도당·아미노산 등) → <b>분비</b>(모세 혈관 → 세뇨관)",
-        "오줌의 이동: 콩팥 → 오줌관 → 방광 → 요도 → 몸 밖"
-      ],
-      connect: "<b>순환계</b>가 운반해 온 요소 등 노폐물을 걸러 낸다. CO₂는 <b>호흡계</b>, 물은 오줌·땀·날숨으로 나간다." },
-    cell: { name: "조직 세포 (세포 호흡)", color: "#7a5bb5",
-      role: "네 기관계가 함께 일하는 진짜 이유! 세포가 에너지를 얻는 곳",
-      organs: ["근육 세포", "신경 세포", "모든 몸 세포", "미토콘드리아"],
-      points: [
-        "<b>영양소 + 산소 → 이산화 탄소 + 물 + 에너지</b>",
-        "얻은 에너지는 근육 운동, 체온 유지, 생장, 두뇌 활동 등에 쓰인다.",
-        "세포는 영양소(소화계)와 산소(호흡계)를 혈액(순환계)으로 받는다.",
-        "생긴 CO₂와 노폐물은 혈액에 실려 호흡계·배설계로 간다."
-      ],
-      connect: "소화·순환·호흡·배설은 모두 <b>세포 호흡이 잘 일어나도록</b> 돕는 활동이다." }
-  };
-  var LINKS = { dig: ["n-dig", "f-food", "f-dig-circ", "f-feces"], circ: ["n-circ", "f-dig-circ", "f-lung-circ", "f-circ-lung", "f-circ-cell", "f-cell-circ", "f-circ-kid"],
-    resp: ["n-resp", "f-air-in", "f-air-out", "f-lung-circ", "f-circ-lung"], exc: ["n-exc", "f-circ-kid", "f-urine"],
-    cell: ["n-cell", "f-circ-cell", "f-cell-circ"] };
-
-  function highlight(ids) {
-    $$(".hl", svg).forEach(function (e) { e.classList.remove("hl"); });
-    if (!ids || !ids.length) { svg.classList.remove("focus"); return; }
-    svg.classList.add("focus");
-    ids.forEach(function (id) { var e = document.getElementById(id); if (e) e.classList.add("hl"); });
-  }
-
-  function showSys(key) {
-    var s = SYS[key];
-    $$(".node", svg).forEach(function (n) { n.classList.toggle("selected", n.dataset.sys === key); });
-    $("#sysPanel").innerHTML =
-      '<h2 class="serif"><span class="swatch" style="background:' + s.color + '"></span>' + s.name + '</h2>' +
-      '<p class="role">' + s.role + '</p>' +
-      '<div class="organs">' + s.organs.map(function (o) { return "<span>" + o + "</span>"; }).join("") + '</div>' +
-      '<ul>' + s.points.map(function (p) { return "<li>" + p + "</li>"; }).join("") + '</ul>' +
-      '<div class="connect"><b>🔗 다른 기관계와의 연결</b><br>' + s.connect + '</div>';
-    highlight(LINKS[key]);
-  }
-  function showIntro() {
-    $$(".node", svg).forEach(function (n) { n.classList.remove("selected"); });
-    highlight(null);
-    $("#sysPanel").innerHTML =
-      '<h2 class="serif">어디부터 볼까요?</h2>' +
-      '<p>지도의 <b>상자(기관계)</b>를 누르면 자세한 설명과 연결 관계가 나옵니다.</p>' +
-      '<div class="connect"><b>핵심 한 줄</b><br>소화계가 흡수한 <b>영양소</b>와 호흡계가 받아들인 <b>산소</b>를 순환계가 세포로 운반하면, 세포는 <b>세포 호흡</b>으로 에너지를 얻는다. 이때 생긴 <b>이산화 탄소</b>는 호흡계로, <b>요소</b> 등 노폐물은 배설계로 나간다.</div>' +
-      '<p class="hint" style="margin-top:0.6rem">💡 오른쪽 위 <b>‘물질의 여행’</b>을 누르면 포도당·산소 등이 실제로 어떤 길을 따라 이동하는지 한 단계씩 따라가 볼 수 있어요.</p>';
-  }
-
-  /* ---------- 물질의 여행 ---------- */
-  var TRIPS = {
-    glucose: { em: "🍚", name: "녹말(밥)의 여행", steps: [
-      { loc: "입", hl: ["n-dig", "f-food"], t: "입에서 소화 시작", d: "밥을 씹으면 침 속의 <b>아밀레이스</b>가 녹말을 <b>엿당</b>으로 분해한다." },
-      { loc: "소장", hl: ["n-dig"], t: "포도당으로 최종 분해", d: "소장에서 이자액의 아밀레이스와 소장의 탄수화물 소화 효소가 작용해 녹말·엿당을 <b>포도당</b>으로 분해한다." },
-      { loc: "소장 융털", hl: ["n-dig", "f-dig-circ"], t: "융털의 모세 혈관으로 흡수", d: "포도당은 물에 잘 녹는 <b>수용성</b> 영양소라서 융털의 <b>모세 혈관</b>으로 흡수되어 혈액에 실린다." },
-      { loc: "심장 → 대동맥", hl: ["n-circ", "f-dig-circ"], t: "혈액을 타고 심장으로", d: "포도당이 녹아 있는 혈액은 (간을 거쳐) 심장으로 들어가고, <b>좌심실 → 대동맥</b>을 통해 온몸으로 나간다." },
-      { loc: "조직 모세 혈관", hl: ["n-circ", "f-circ-cell", "n-cell"], t: "세포로 전달", d: "온몸의 모세 혈관에서 포도당이 <b>조직 세포</b>로 이동한다." },
-      { loc: "조직 세포", hl: ["n-cell"], t: "세포 호흡으로 에너지 생성", d: "세포는 포도당을 산소와 반응시켜 <b>에너지</b>를 얻는다. 이때 <b>이산화 탄소</b>와 <b>물</b>이 생긴다." },
-      { loc: "폐 → 몸 밖", hl: ["n-cell", "f-cell-circ", "n-circ", "f-circ-lung", "n-resp", "f-air-out"], t: "남은 물질은 몸 밖으로", d: "이산화 탄소는 혈액 → 폐 → <b>날숨</b>으로 나가고, 물은 날숨·땀·오줌으로 나간다." }
-    ], think: "포도당은 소화·순환·호흡·배설 중 몇 개의 기관계를 거쳤나요? 각각 무슨 일을 했는지 말해 봅시다." },
-    oxygen: { em: "💨", name: "산소의 여행", steps: [
-      { loc: "코 → 숨관 → 숨관가지", hl: ["f-air-in", "n-resp"], t: "들숨으로 들어오기", d: "갈비뼈가 올라가고 가로막이 내려가면 흉강이 넓어져 공기가 <b>코 → 숨관 → 숨관가지 → 폐</b>로 들어온다." },
-      { loc: "허파꽈리", hl: ["n-resp", "f-lung-circ"], t: "허파꽈리에서 기체 교환", d: "허파꽈리 속 산소 농도가 모세 혈관보다 높아 산소가 <b>확산</b>으로 모세 혈관으로 이동한다." },
-      { loc: "적혈구", hl: ["f-lung-circ", "n-circ"], t: "적혈구에 실려 이동", d: "산소는 적혈구의 <b>헤모글로빈</b>과 결합해 <b>폐정맥 → 좌심방 → 좌심실</b>로 간다." },
-      { loc: "대동맥 → 온몸", hl: ["n-circ", "f-circ-cell"], t: "온몸으로 출발", d: "좌심실이 수축하면 산소가 많은 혈액(동맥혈)이 <b>대동맥</b>을 통해 온몸으로 퍼진다." },
-      { loc: "조직 세포", hl: ["f-circ-cell", "n-cell"], t: "세포로 확산", d: "조직의 모세 혈관에서 산소 농도가 높은 혈액 → 산소가 적은 세포로 산소가 <b>확산</b>된다." },
-      { loc: "세포 호흡", hl: ["n-cell"], t: "영양소를 분해하는 데 사용", d: "산소는 세포 호흡에서 영양소를 분해해 <b>에너지</b>를 얻는 데 쓰인다." }
-    ], think: "폐동맥과 폐정맥 중 산소가 더 많은 혈액이 흐르는 곳은 어디일까요? 왜 그럴까요?" },
-    co2: { em: "🫧", name: "이산화 탄소의 여행", steps: [
-      { loc: "조직 세포", hl: ["n-cell"], t: "세포 호흡으로 생김", d: "세포가 영양소를 분해해 에너지를 얻을 때 <b>이산화 탄소</b>가 생긴다." },
-      { loc: "조직 모세 혈관", hl: ["n-cell", "f-cell-circ"], t: "혈액으로 확산", d: "세포 속 CO₂ 농도가 더 높아 CO₂가 모세 혈관으로 <b>확산</b>된다. 주로 <b>혈장</b>에 녹아 운반된다." },
-      { loc: "대정맥 → 우심방 → 우심실", hl: ["f-cell-circ", "n-circ"], t: "심장으로 돌아오기", d: "CO₂가 많은 혈액(정맥혈)은 <b>대정맥 → 우심방 → 우심실</b>로 들어온다." },
-      { loc: "폐동맥 → 허파꽈리", hl: ["n-circ", "f-circ-lung", "n-resp"], t: "폐에서 기체 교환", d: "우심실 → <b>폐동맥</b> → 폐 모세 혈관에서 CO₂가 허파꽈리로 <b>확산</b>된다." },
-      { loc: "몸 밖", hl: ["n-resp", "f-air-out"], t: "날숨으로 배출", d: "갈비뼈가 내려가고 가로막이 올라가면 흉강이 좁아져 CO₂가 <b>날숨</b>으로 나간다." }
-    ], think: "이산화 탄소를 몸 밖으로 내보내는 것도 '배설'일까요? (힌트: 세포 호흡 결과 생긴 노폐물)" },
-    urea: { em: "🥚", name: "단백질 → 요소의 여행", steps: [
-      { loc: "위 → 소장", hl: ["n-dig", "f-food"], t: "아미노산으로 분해", d: "달걀 속 단백질은 위의 <b>펩신</b>, 소장의 <b>트립신</b> 등에 의해 <b>아미노산</b>으로 분해된다." },
-      { loc: "소장 융털", hl: ["n-dig", "f-dig-circ", "n-circ"], t: "흡수 후 운반", d: "아미노산은 융털의 모세 혈관으로 흡수되어 혈액을 타고 온몸으로 운반된다." },
-      { loc: "조직 세포", hl: ["f-circ-cell", "n-cell"], t: "몸을 만들거나 에너지로", d: "아미노산은 몸을 구성하는 데 쓰이거나, 세포 호흡으로 분해될 때 CO₂, 물과 함께 <b>암모니아</b>가 생긴다." },
-      { loc: "간", hl: ["n-cell", "f-cell-circ", "n-circ", "n-dig"], t: "암모니아 → 요소", d: "독성이 강한 암모니아는 혈액을 타고 <b>간</b>으로 가서 독성이 약한 <b>요소</b>로 바뀐다." },
-      { loc: "콩팥(콩팥단위)", hl: ["n-circ", "f-circ-kid", "n-exc"], t: "콩팥에서 걸러짐", d: "요소가 든 혈액이 콩팥에 오면 <b>토리 → 보먼주머니</b>로 여과되고, 필요한 물질은 재흡수, 남은 노폐물은 분비되어 오줌이 된다." },
-      { loc: "몸 밖", hl: ["n-exc", "f-urine"], t: "오줌으로 배설", d: "오줌은 <b>콩팥 → 오줌관 → 방광 → 요도</b>를 거쳐 몸 밖으로 나간다." }
-    ], think: "간은 소화계에 속하면서 배설에도 관여합니다. 간이 하는 일을 두 가지 이상 말해 봅시다." },
-    fiber: { em: "🥬", name: "소화 안 된 찌꺼기", steps: [
-      { loc: "입 → 위 → 소장", hl: ["n-dig", "f-food"], t: "소화되지 않고 통과", d: "채소의 <b>식이 섬유</b>처럼 소화 효소로 분해되지 않는 물질은 흡수되지 못하고 소화관을 따라 이동한다." },
-      { loc: "대장", hl: ["n-dig"], t: "물 흡수", d: "대장에서는 주로 <b>물</b>이 흡수되고, 남은 찌꺼기가 대변이 된다." },
-      { loc: "항문", hl: ["n-dig", "f-feces"], t: "대변으로 배출", d: "대변은 몸속 세포를 거친 적이 없다. 세포 호흡의 노폐물이 아니므로 <b>배설이 아니라 '배출'</b>이다." }
-    ], think: "오줌을 내보내는 것은 배설이고, 대변을 내보내는 것은 배설이 아닌 까닭을 설명해 봅시다." }
-  };
-  var curTrip = null, curStep = 0, autoTimer = null;
-
-  var pick = $("#tripPick");
-  Object.keys(TRIPS).forEach(function (k) {
-    var b = document.createElement("button");
-    b.innerHTML = '<span class="em">' + TRIPS[k].em + "</span>" + TRIPS[k].name;
-    b.setAttribute("aria-pressed", "false"); b.dataset.k = k;
-    b.onclick = function () { startTrip(k); };
-    pick.appendChild(b);
-  });
-
-  function startTrip(k) {
-    stopAuto();
-    curTrip = k; curStep = 0;
-    $$("button", pick).forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.k === k ? "true" : "false"); });
-    renderStep();
-  }
-  function renderStep() {
-    var T = TRIPS[curTrip], s = T.steps[curStep], last = curStep === T.steps.length - 1;
-    var prog = T.steps.map(function (_, i) { return '<i class="' + (i <= curStep ? "on" : "") + '"></i>'; }).join("");
-    $("#stepBox").innerHTML =
-      '<div class="progress">' + prog + '</div>' +
-      '<span class="step-loc">📍 ' + s.loc + '</span> <span class="hint">' + (curStep + 1) + ' / ' + T.steps.length + '단계</span>' +
-      '<h3 class="step-title serif">' + s.t + '</h3>' +
-      '<p class="step-text">' + s.d + '</p>' +
-      '<div class="step-nav">' +
-        '<button class="big-btn ghost" id="prevS"' + (curStep === 0 ? " disabled" : "") + '>◀ 이전</button>' +
-        '<button class="big-btn ghost" id="autoS">' + (autoTimer ? "⏸ 멈춤" : "▶ 자동") + '</button>' +
-        '<button class="big-btn" id="nextS"' + (last ? " disabled" : "") + '>다음 ▶</button>' +
-      '</div>' +
-      (last ? '<div class="think"><b>🤔 생각해 보기</b><br>' + T.think + '</div>' : "");
-    highlight(s.hl);
-    $("#prevS").onclick = function () { stopAuto(); if (curStep > 0) { curStep--; renderStep(); } };
-    $("#nextS").onclick = function () { stopAuto(); if (!last) { curStep++; renderStep(); } };
-    $("#autoS").onclick = function () { if (autoTimer) { stopAuto(); renderStep(); } else { startAuto(); } };
-  }
-  function startAuto() {
-    if (curStep >= TRIPS[curTrip].steps.length - 1) curStep = 0;
-    autoTimer = setInterval(function () {
-      if (curStep < TRIPS[curTrip].steps.length - 1) { curStep++; renderStep(); }
-      if (curStep >= TRIPS[curTrip].steps.length - 1) { stopAuto(); renderStep(); }
-    }, 4500);
-    renderStep();
-  }
-  function stopAuto() { if (autoTimer) { clearInterval(autoTimer); autoTimer = null; } }
-
-  function setMode(trip) {
-    stopAuto();
-    $("#modeSys").setAttribute("aria-pressed", trip ? "false" : "true");
-    $("#modeTrip").setAttribute("aria-pressed", trip ? "true" : "false");
-    $("#sysPanel").hidden = trip; $("#tripPanel").hidden = !trip;
-    if (trip) {
-      $$(".node", svg).forEach(function (n) { n.classList.remove("selected"); });
-      if (curTrip) renderStep(); else highlight(null);
-    } else { showIntro(); }
-  }
-  $("#modeSys").onclick = function () { setMode(false); };
-  $("#modeTrip").onclick = function () { setMode(true); };
-  $("#resetBtn").onclick = function () {
-    curTrip = null; stopAuto();
-    $$("button", pick).forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
-    $("#stepBox").innerHTML = '<p class="hint">위에서 따라갈 물질을 골라 보세요. 지도에서 그 물질이 지나는 길만 밝게 표시됩니다.</p>';
-    setMode(false);
-  };
-  $$(".node", svg).forEach(function (n) {
-    var go = function () { setMode(false); showSys(n.dataset.sys); };
-    n.addEventListener("click", go);
-    n.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
-  });
-  showIntro();
-
-  /* ---------- 운동 실험실 ---------- */
-  var LEVELS = [
-    { max: 15, name: "휴식", think: "휴식할 때도 심장은 뛰고 숨을 쉽니다. 왜 그럴까요? (힌트: 잠잘 때도 세포는 살아 있어요.)" },
-    { max: 45, name: "걷기", think: "걷기 시작하자 가장 먼저 에너지를 더 많이 쓰게 되는 곳은 어디일까요?" },
-    { max: 80, name: "달리기", think: "호흡계만 빨라지고 순환계는 그대로라면 어떤 문제가 생길까요?" },
-    { max: 101, name: "전력 질주", think: "운동이 끝난 뒤에도 한동안 숨이 차고 심장이 빨리 뛰는 까닭은 무엇일까요?" }
-  ];
-  function updateLab() {
-    var x = +$("#intensity").value;
-    var bpm = Math.round(70 + x * 1.1);
-    var br = Math.round(15 + x * 0.35);
-    var rs = (1 + x * 0.09);
-    var lv = LEVELS.filter(function (l) { return x < l.max; })[0];
-    $("#levelName").textContent = lv.name;
-    $("#gHeart").innerHTML = bpm + " <small>회/분</small>";
-    $("#gBreath").innerHTML = br + " <small>회/분</small>";
-    $("#gResp").innerHTML = "×" + rs.toFixed(1) + " <small>휴식 대비</small>";
-    $("#gSweat").textContent = x < 30 ? "적음" : x < 65 ? "보통" : "많음";
-    $("#bHeart").style.width = (bpm - 40) / 1.6 + "%";
-    $("#bBreath").style.width = br * 1.9 + "%";
-    $("#bResp").style.width = rs * 10 + "%";
-    $("#bSweat").style.width = Math.max(8, x) + "%";
-    $("#heartIc").style.animationDuration = (60 / bpm).toFixed(2) + "s";
-    $("#lungIc").style.animationDuration = (60 / br).toFixed(2) + "s";
-    $$("#chain li").forEach(function (li) { li.classList.toggle("on", x >= +li.dataset.min); });
-    $("#labThink").innerHTML = "<b>🤔 생각해 보기</b><br>" + lv.think;
-  }
-  $("#intensity").addEventListener("input", updateLab);
-  updateLab();
-
-  /* ---------- 용어 분류 ---------- */
-  var BINS = [
-    { k: "dig", name: "소화계", c: "#d9822b" }, { k: "circ", name: "순환계", c: "#c8414b" },
-    { k: "resp", name: "호흡계", c: "#2f74c0" }, { k: "exc", name: "배설계", c: "#2e8f68" }
-  ];
-  var TERMS = [
-    ["융털", "dig", "소장 안쪽의 작은 돌기로, 영양소를 흡수해요."], ["아밀레이스", "dig", "녹말을 분해하는 소화 효소예요."],
-    ["쓸개즙", "dig", "간에서 만들어져 지방의 소화를 도와요."], ["펩신", "dig", "위에서 단백질을 분해하는 효소예요."],
-    ["판막", "circ", "심장과 정맥에서 혈액이 거꾸로 흐르는 것을 막아요."], ["좌심실", "circ", "온몸으로 혈액을 내보내는 심장의 방이에요."],
-    ["적혈구", "circ", "헤모글로빈으로 산소를 운반하는 혈액 성분이에요."], ["대동맥", "circ", "좌심실에서 나온 혈액이 지나는 가장 굵은 동맥이에요."],
-    ["허파꽈리", "resp", "기체 교환이 일어나는 작은 공기 주머니예요."], ["가로막", "resp", "오르내리며 흉강의 부피를 바꾸는 근육 막이에요."],
-    ["숨관가지", "resp", "숨관에서 갈라져 폐로 들어가는 관이에요."], ["숨관", "resp", "코와 폐 사이 공기가 지나는 관이에요."],
-    ["콩팥단위", "exc", "콩팥에서 오줌을 만드는 기본 구조예요."], ["토리", "exc", "모세 혈관이 실뭉치처럼 뭉쳐 혈액을 여과해요."],
-    ["방광", "exc", "오줌을 잠시 모아 두는 곳이에요."], ["보먼주머니", "exc", "토리에서 여과된 물질이 들어가는 주머니예요."]
-  ];
-  var picked = null, okN = 0, badN = 0;
-  function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
-  function setupSort() {
-    picked = null; okN = 0; badN = 0;
-    var terms = $("#terms"); terms.innerHTML = "";
-    shuffle(TERMS).forEach(function (t) {
-      var b = document.createElement("button");
-      b.className = "term"; b.textContent = t[0]; b.dataset.k = t[1]; b.dataset.tip = t[2];
-      b.onclick = function () {
-        $$(".term").forEach(function (x) { x.classList.remove("picked"); });
-        if (picked === b) { picked = null; markBins(false); fb("카드를 하나 골라 보세요.", ""); return; }
-        picked = b; b.classList.add("picked"); markBins(true);
-        fb("‘" + b.textContent + "’ 카드를 골랐어요. 알맞은 기관계 상자를 누르세요.", "");
-      };
-      terms.appendChild(b);
+/* ================= 1. 노폐물 ================= */
+var WASTE = {
+  co2:   {name:"이산화탄소", cls:"co2",   route:["혈액","폐","날숨"], note:"호흡계를 통해 날숨으로 나가요."},
+  water: {name:"물",        cls:"water", route:["혈액","콩팥 → 오줌 / 폐 → 날숨 / 피부 → 땀"], note:"여러 기관을 통해 나가요. 콩팥에서는 오줌의 형태로 배설돼요."},
+  nh3:   {name:"암모니아",   cls:"nh3",   route:["혈액","간 (독성이 약한 요소로 바뀜)","콩팥","오줌"], note:"암모니아는 독성이 강해요. 간에서 요소로 바뀐 뒤 콩팥에서 걸러져 오줌으로 나가요."}
+};
+var NUTRI = { carb:["co2","water"], fat:["co2","water"], protein:["co2","water","nh3"] };
+var NUTRI_NAME = { carb:"탄수화물", fat:"지방", protein:"단백질" };
+$$("[data-nutri]").forEach(function(b){
+  b.addEventListener("click", function(){
+    $$("[data-nutri]").forEach(function(x){ x.classList.toggle("on", x === b); });
+    var k = b.dataset.nutri, out = $("#flowOut");
+    var html = "<p><b>" + NUTRI_NAME[k] + "</b>이(가) 세포 호흡으로 분해되면 → " +
+      NUTRI[k].map(function(w){ return '<span class="chip ' + WASTE[w].cls + '">' + WASTE[w].name + "</span>"; }).join(" ") + "</p>";
+    NUTRI[k].forEach(function(w, i){
+      var d = WASTE[w];
+      html += '<div class="flow-row" style="animation-delay:' + (i*0.12) + 's"><div class="flow-line"><span class="chip ' + d.cls + '">' + d.name + "</span>";
+      d.route.forEach(function(r){ html += '<span class="arrow">→</span><span class="chip organ">' + r + "</span>"; });
+      html += '</div><div class="flow-note">' + d.note + "</div></div>";
     });
-    var bins = $("#bins"); bins.innerHTML = "";
-    BINS.forEach(function (B) {
-      var d = document.createElement("button");
-      d.className = "bin"; d.style.setProperty("--c", B.c); d.dataset.k = B.k;
-      d.innerHTML = "<h3 class='serif'>" + B.name + "</h3><div class='placed'></div>";
-      d.onclick = function () { drop(d); };
-      bins.appendChild(d);
-    });
-    fb("카드를 하나 골라 보세요.", ""); counts();
-  }
-  function markBins(on) { $$(".bin").forEach(function (b) { b.classList.toggle("ready", on); }); }
-  function fb(msg, cls) { var f = $("#sortFb"); f.textContent = msg; f.className = "feedback " + cls; }
-  function counts() { $("#leftCnt").textContent = $$(".term").length; $("#okCnt").textContent = okN; $("#badCnt").textContent = badN; }
-  function drop(bin) {
-    if (!picked) { fb("먼저 위의 용어 카드를 골라 주세요.", "bad"); return; }
-    var t = picked;
-    if (t.dataset.k === bin.dataset.k) {
-      okN++;
-      var s = document.createElement("span"); s.textContent = t.textContent; $(".placed", bin).appendChild(s);
-      fb("⭕ 정답! " + t.textContent + ": " + t.dataset.tip, "ok");
-      t.remove(); picked = null; markBins(false);
-      if (!$$(".term").length) fb("🎉 모두 완성! 정답 " + okN + "개, 다시 시도 " + badN + "번. 각 상자의 용어로 기관계의 역할을 말해 보세요.", "ok");
-    } else {
-      badN++;
-      t.classList.remove("shake"); void t.offsetWidth; t.classList.add("shake");
-      fb("❌ 다시 생각해 보세요. 힌트: " + t.dataset.tip, "bad");
-    }
-    counts();
-  }
-  $("#sortReset").onclick = setupSort;
-  setupSort();
+    out.innerHTML = html;
+  });
+});
 
-  /* ---------- 퀴즈 ---------- */
-  var QUIZ = [
-    { q: "소장에서 흡수된 포도당을 온몸의 조직 세포까지 운반하는 기관계는?", o: ["소화계", "순환계", "호흡계", "배설계"], a: 1,
-      e: "흡수된 영양소는 혈액에 실려 <b>순환계</b>를 통해 온몸의 세포로 운반됩니다." },
-    { q: "세포 호흡에 반드시 필요한 두 가지 물질은?", o: ["영양소와 산소", "물과 이산화 탄소", "요소와 물", "산소와 이산화 탄소"], a: 0,
-      e: "세포 호흡: <b>영양소 + 산소</b> → 이산화 탄소 + 물 + 에너지" },
-    { q: "허파꽈리와 모세 혈관 사이에서 산소와 이산화 탄소가 교환되는 원리는?", o: ["여과", "재흡수", "확산", "분비"], a: 2,
-      e: "기체는 농도가 높은 곳에서 낮은 곳으로 <b>확산</b>됩니다. 산소는 허파꽈리 → 모세 혈관, 이산화 탄소는 모세 혈관 → 허파꽈리로 이동합니다." },
-    { q: "영양소 중 세포 호흡에 쓰일 때 암모니아가 생기는 것은?", o: ["탄수화물", "지방", "단백질", "무기염류"], a: 2,
-      e: "<b>단백질</b>에는 질소가 있어 분해될 때 이산화 탄소, 물과 함께 <b>암모니아</b>가 생깁니다." },
-    { q: "독성이 강한 암모니아를 독성이 약한 요소로 바꾸는 기관은?", o: ["콩팥", "간", "폐", "이자"], a: 1,
-      e: "암모니아는 <b>간</b>에서 요소로 바뀐 뒤 콩팥에서 걸러져 오줌으로 나갑니다." },
-    { q: "대변을 내보내는 것을 '배설'이라고 하지 않는 까닭으로 옳은 것은?", o: ["대변은 콩팥에서 만들어지기 때문에", "대변은 세포 호흡 결과 생긴 노폐물이 아니기 때문에", "대변에는 물이 없기 때문에", "대변은 순환계를 통해 나가기 때문에"], a: 1,
-      e: "대변은 소화·흡수되지 않은 찌꺼기로 세포를 거치지 않았습니다. 그래서 <b>배설이 아니라 배출</b>입니다." },
-    { q: "콩팥의 토리에서 보먼주머니로 물질이 이동하는 과정은?", o: ["여과", "재흡수", "분비", "확산"], a: 0,
-      e: "혈압에 의해 크기가 작은 물질이 토리에서 보먼주머니로 걸러지는 과정이 <b>여과</b>입니다." },
-    { q: "폐에서 산소를 받은 혈액이 심장으로 들어오는 경로로 옳은 것은?", o: ["대정맥 → 우심방", "폐동맥 → 우심실", "폐정맥 → 좌심방", "대동맥 → 좌심실"], a: 2,
-      e: "폐순환: 우심실 → 폐동맥 → 폐 → <b>폐정맥 → 좌심방</b>" },
-    { q: "운동을 하면 호흡과 심장 박동이 빨라지는 까닭으로 가장 알맞은 것은?", o: ["소화 효소가 많이 만들어져서", "세포 호흡이 활발해져 산소·영양소가 더 필요하고 CO₂가 더 많이 생겨서", "오줌을 많이 만들어야 해서", "혈액의 양이 줄어들어서"], a: 1,
-      e: "근육 세포의 <b>세포 호흡</b>이 활발해지면 산소와 영양소를 더 빨리 공급하고 이산화 탄소를 더 빨리 내보내야 합니다." },
-    { q: "들숨이 일어날 때의 변화로 옳은 것은?", o: ["갈비뼈 ↓, 가로막 ↑", "갈비뼈 ↑, 가로막 ↓", "갈비뼈 ↓, 가로막 ↓", "갈비뼈 ↑, 가로막 ↑"], a: 1,
-      e: "들숨: 갈비뼈가 올라가고 가로막이 내려가 흉강 부피가 커지고 폐 내부 압력이 낮아져 공기가 들어옵니다." }
-  ];
-  var qOrder = [], qi = 0, score = 0, answered = false;
-  function startQuiz() { qOrder = shuffle(QUIZ.map(function (_, i) { return i; })); qi = 0; score = 0; renderQ(); }
-  function renderQ() {
-    answered = false;
-    if (qi >= qOrder.length) {
-      var msg = score === QUIZ.length ? "완벽해요! 네 기관계의 관계를 잘 이해했어요." : score >= 7 ? "잘했어요! 틀린 문제는 통합 지도에서 다시 확인해 보세요." : "‘물질의 여행’을 다시 따라가 본 뒤 도전해 보세요!";
-      $("#quizBox").innerHTML = '<div class="result"><h2 class="serif">퀴즈 결과</h2><div class="big">' + score + ' / ' + QUIZ.length + '</div><p>' + msg + '</p><button class="big-btn" id="qAgain" style="max-width:320px;width:100%">↺ 다시 풀기</button></div>';
-      $("#qAgain").onclick = startQuiz; return;
-    }
-    var Q = QUIZ[qOrder[qi]];
-    $("#quizBox").innerHTML =
-      '<div class="q-head"><span>문제 ' + (qi + 1) + ' / ' + QUIZ.length + '</span><span>점수 ' + score + '</span></div>' +
-      '<div class="progress">' + QUIZ.map(function (_, i) { return '<i class="' + (i < qi ? "on" : "") + '"></i>'; }).join("") + '</div>' +
-      '<div class="q-text serif">' + Q.q + '</div>' +
-      '<div class="opts">' + Q.o.map(function (t, i) { return '<button class="opt" data-i="' + i + '"><span class="lt">' + "①②③④"[i] + '</span><span>' + t + '</span></button>'; }).join("") + '</div>' +
-      '<div class="explain" id="qExp"></div>' +
-      '<div class="step-nav" style="margin-top:0.8rem"><button class="big-btn" id="qNext" disabled>다음 문제 ▶</button></div>';
-    $$(".opt").forEach(function (b) {
-      b.onclick = function () {
-        if (answered) return; answered = true;
-        var i = +b.dataset.i, right = i === Q.a;
-        if (right) score++;
-        $$(".opt").forEach(function (x) { x.disabled = true; if (+x.dataset.i === Q.a) x.classList.add("correct"); });
-        if (!right) b.classList.add("wrong");
-        var ex = $("#qExp"); ex.innerHTML = (right ? "⭕ <b>정답!</b> " : "❌ <b>아쉬워요.</b> ") + Q.e; ex.classList.add("show");
-        var n = $("#qNext"); n.disabled = false; if (qi === QUIZ.length - 1) n.textContent = "결과 보기 ▶";
-      };
-    });
-    $("#qNext").onclick = function () { qi++; renderQ(); };
+/* ================= 2. 배설 기관 ================= */
+var PARTS = {
+  kidney:  {name:"콩팥", color:"#a8473f", text:"강낭콩 모양으로, 등 쪽 허리 부근에 좌우 한 쌍이 있어요.", fn:["혈액 속의 노폐물을 걸러 <b>오줌을 만들어요.</b>","몸속 물과 무기염류의 양을 조절해요."]},
+  ureter:  {name:"오줌관", color:"#d4a72c", text:"콩팥과 방광을 잇는 가느다란 관이에요.", fn:["콩팥에서 만들어진 오줌을 <b>방광으로 보내요.</b>"]},
+  bladder: {name:"방광", color:"#f2d675", text:"근육으로 된 주머니 모양의 기관이에요.", fn:["오줌을 <b>잠시 모아 두었다가</b> 내보내요."]},
+  urethra: {name:"요도", color:"#e8c35a", text:"방광과 몸 밖을 잇는 관이에요.", fn:["방광의 오줌을 <b>몸 밖으로 내보내요.</b>"]},
+  rartery: {name:"콩팥 동맥", color:"#d9534f", text:"대동맥에서 갈라져 콩팥으로 들어가는 혈관이에요.", fn:["<b>노폐물이 많은</b> 혈액을 콩팥으로 운반해요."]},
+  rvein:   {name:"콩팥 정맥", color:"#4a78b5", text:"콩팥에서 나와 대정맥으로 이어지는 혈관이에요.", fn:["노폐물이 걸러져 <b>노폐물이 적은</b> 혈액이 흘러요."]},
+  aorta:   {name:"대동맥", color:"#d9534f", text:"심장에서 나온 혈액이 온몸으로 가는 굵은 혈관이에요.", fn:["콩팥 동맥으로 혈액을 나누어 보내요."]},
+  vena:    {name:"대정맥", color:"#4a78b5", text:"온몸을 돈 혈액이 심장으로 돌아가는 굵은 혈관이에요.", fn:["콩팥 정맥의 혈액이 이곳으로 모여 심장으로 가요."]},
+  cortex:  {name:"겉질", color:"#cf7a68", text:"콩팥의 바깥쪽 부분이에요.", fn:["<b>사구체와 보먼주머니</b>가 주로 이곳에 있어요."]},
+  medulla: {name:"속질", color:"#8f3a33", text:"겉질 안쪽의 부분이에요.", fn:["<b>세뇨관과 집합관</b>이 많이 지나가요."]},
+  pelvis:  {name:"콩팥 깔때기", color:"#f2d675", text:"콩팥의 가장 안쪽에 있는 빈 공간이에요.", fn:["만들어진 오줌이 <b>모이는 곳</b>이에요.","모인 오줌은 오줌관으로 이동해요."]},
+  nephron: {name:"네프론", color:"#ffffff", text:"오줌을 만드는 <b>기본 단위</b>예요. 콩팥 하나에 약 100만 개가 있어요.", fn:["사구체 + 보먼주머니 + 세뇨관으로 이루어져요.","‘3. 오줌 생성 과정’ 탭에서 자세히 살펴보세요!"]}
+};
+function selectPart(key){
+  $$(".part").forEach(function(p){ p.classList.toggle("sel", p.dataset.part === key); });
+  var d = PARTS[key]; if(!d) return;
+  $("#partInfo").innerHTML =
+    '<span class="tag" style="background:var(--blue)">설명</span>' +
+    '<h3><span class="swatch" style="background:' + d.color + '"></span>' + d.name + "</h3>" +
+    "<p>" + d.text + "</p><p><b>하는 일</b></p><ul>" + d.fn.map(function(f){ return "<li>" + f + "</li>"; }).join("") + "</ul>";
+}
+$$("[data-part]").forEach(function(el){
+  el.addEventListener("click", function(e){ e.stopPropagation(); selectPart(el.dataset.part); });
+});
+var viewBody = $("#viewBody"), viewKidney = $("#viewKidney"), labelsHidden = false;
+function setView(k){
+  $("#bodyWrap").hidden = k; $("#kidneyWrap").hidden = !k;
+  viewBody.classList.toggle("on", !k); viewKidney.classList.toggle("on", k);
+}
+viewBody.addEventListener("click", function(){ setView(false); });
+viewKidney.addEventListener("click", function(){ setView(true); });
+$("#toggleLabels").addEventListener("click", function(){
+  labelsHidden = !labelsHidden;
+  $("#bodySvg").classList.toggle("hide-labels", labelsHidden);
+  $("#kidneySvg").classList.toggle("hide-labels", labelsHidden);
+  this.textContent = labelsHidden ? "👀 이름 보이기" : "🙈 이름 가리기";
+  this.classList.toggle("on", labelsHidden);
+});
+
+/* ================= 3. 네프론 시뮬레이션 ================= */
+var SUBS = {
+  cell:    {name:"혈구",    color:"#c0392b", r:9},
+  protein: {name:"단백질",  color:"#8e44ad", r:9},
+  water:   {name:"물",      color:"#3498db", r:6},
+  glucose: {name:"포도당",  color:"#f1c40f", r:6},
+  amino:   {name:"아미노산", color:"#27ae60", r:6},
+  salt:    {name:"무기염류", color:"#7f8c8d", r:6},
+  urea:    {name:"요소",    color:"#e67e22", r:6}
+};
+// 구역: A=사구체(혈액), B=세뇨관, C=모세혈관(혈액), D=집합관(오줌)
+var PLIST = [];
+function add(t, zones, n){ for(var i=0;i<n;i++) PLIST.push({t:t, zones:zones}); }
+add("cell",    ["A","C","C","C","C"], 2);
+add("protein", ["A","C","C","C","C"], 2);
+add("water",   ["A","B","C","C","C"], 3);
+add("water",   ["A","B","B","B","D"], 1);
+add("glucose", ["A","B","C","C","C"], 2);
+add("amino",   ["A","B","C","C","C"], 2);
+add("salt",    ["A","B","C","C","C"], 1);
+add("salt",    ["A","B","B","B","D"], 1);
+add("urea",    ["A","B","B","B","D"], 2);
+add("urea",    ["A","C","C","B","D"], 1);
+
+var pg = $("#particles");
+PLIST.forEach(function(p){
+  var c = document.createElementNS(NS, "circle");
+  c.setAttribute("r", SUBS[p.t].r);
+  c.setAttribute("fill", SUBS[p.t].color);
+  c.setAttribute("stroke", "#fff");
+  c.setAttribute("stroke-width", "1.8");
+  c.setAttribute("class", "ptc");
+  var tt = document.createElementNS(NS, "title"); tt.textContent = SUBS[p.t].name; c.appendChild(tt);
+  pg.appendChild(c); p.el = c;
+});
+function slot(z, i){
+  if(z === "A") return [102 + (i%5)*14, 106 + Math.floor(i/5)*15];
+  if(z === "B") return [232 + i*22, 200];
+  if(z === "C") return [130 + i*22, 270];
+  return [512 + (i%2)*16, 300 + Math.floor(i/2)*17];
+}
+$("#legend").innerHTML = Object.keys(SUBS).map(function(k){
+  var s = SUBS[k], d = s.r*2;
+  return '<span><i style="width:' + d + "px;height:" + d + "px;background:" + s.color + '"></i>' + s.name + "</span>";
+}).join("");
+
+var STEPS = [
+  {tag:"출발", title:"① 혈액이 사구체로 들어와요",
+   text:"콩팥 동맥에서 갈라진 혈관이 실뭉치처럼 얽힌 <b>사구체</b>로 혈액이 들어와요. 혈액 속에는 혈구, 단백질, 물, 포도당, 아미노산, 무기염류, 요소가 섞여 있어요."},
+  {tag:"여과", title:"② 여과 : 사구체 → 보먼주머니",
+   text:"사구체의 높은 압력 때문에 <b>크기가 작은 물질</b>(물, 포도당, 아미노산, 무기염류, 요소)이 보먼주머니로 걸러져요. <b>혈구와 단백질</b>은 크기가 커서 여과되지 않고 모세혈관으로 흘러가요. 요소 일부도 혈액에 남아요."},
+  {tag:"재흡수", title:"③ 재흡수 : 세뇨관 → 모세혈관",
+   text:"몸에 필요한 물질은 세뇨관을 지나는 동안 다시 혈액으로 돌아가요. <b>포도당과 아미노산은 모두</b>, <b>물과 무기염류는 대부분</b> 재흡수돼요. 그래서 건강한 사람의 오줌에는 포도당이 없어요."},
+  {tag:"분비", title:"④ 분비 : 모세혈관 → 세뇨관",
+   text:"여과되지 않고 혈액에 남아 있던 <b>노폐물 일부</b>가 모세혈관에서 세뇨관으로 이동해요. 분비는 재흡수와 <b>방향이 반대</b>라는 점에 주의하세요!"},
+  {tag:"완성", title:"⑤ 오줌 완성!",
+   text:"세뇨관에 남은 물질이 <b>오줌</b>이 되어 집합관 → 콩팥 깔때기 → 오줌관 → 방광 → 요도를 거쳐 몸 밖으로 나가요. 노폐물이 걸러진 혈액은 <b>콩팥 정맥</b>으로 나가요."}
+];
+var step = 0, svgN = $("#nephronSvg"), auto = null;
+var dots = $("#stepDots");
+STEPS.forEach(function(s, i){
+  var b = document.createElement("button");
+  b.className = "step-dot"; b.textContent = (i+1) + ". " + s.tag;
+  b.addEventListener("click", function(){ stopAuto(); go(i); });
+  dots.appendChild(b);
+});
+function go(n){
+  step = Math.max(0, Math.min(STEPS.length-1, n));
+  svgN.setAttribute("data-step", step);
+  var cnt = {A:0,B:0,C:0,D:0};
+  PLIST.forEach(function(p){
+    var z = p.zones[step], xy = slot(z, cnt[z]++);
+    p.el.style.transform = "translate(" + xy[0] + "px," + xy[1] + "px)";
+  });
+  var s = STEPS[step];
+  $("#stepTag").textContent = (step+1) + "단계 · " + s.tag;
+  $("#stepTitle").textContent = s.title;
+  $("#stepText").innerHTML = s.text;
+  $$(".step-dot").forEach(function(d, i){ d.classList.toggle("on", i === step); });
+  $("#prevStep").disabled = step === 0;
+  $("#nextStep").disabled = step === STEPS.length-1;
+  // 위치 표
+  var rows = "";
+  Object.keys(SUBS).forEach(function(k){
+    var blood = 0, tube = 0;
+    PLIST.forEach(function(p){ if(p.t !== k) return; var z = p.zones[step]; if(z === "A" || z === "C") blood++; else tube++; });
+    var label = (step === 4 ? "오줌" : "세뇨관");
+    rows += "<tr><td><span style='color:" + SUBS[k].color + "'>●</span> " + SUBS[k].name + "</td>" +
+      "<td class='count-cell" + (blood ? "" : " zero") + "'>" + (blood ? "●".repeat(blood) : "–") + "</td>" +
+      "<td class='count-cell" + (tube ? "" : " zero") + "' title='" + label + "'>" + (tube ? "●".repeat(tube) : "–") + "</td></tr>";
+  });
+  $("#countBody").innerHTML = rows;
+}
+function stopAuto(){ if(auto){ clearInterval(auto); auto = null; } var b = $("#autoPlay"); if(b){ b.textContent = "▶ 자동 재생"; b.classList.remove("on"); } }
+$("#prevStep").addEventListener("click", function(){ stopAuto(); go(step-1); });
+$("#nextStep").addEventListener("click", function(){ stopAuto(); go(step+1); });
+$("#resetStep").addEventListener("click", function(){ stopAuto(); go(0); });
+$("#autoPlay").addEventListener("click", function(){
+  if(auto){ stopAuto(); return; }
+  if(step === STEPS.length-1) go(0);
+  this.textContent = "⏸ 멈춤"; this.classList.add("on");
+  auto = setInterval(function(){ if(step >= STEPS.length-1){ stopAuto(); return; } go(step+1); }, 3500);
+});
+go(0);
+
+/* ================= 4. 성분 비교 ================= */
+var CMP = [
+  {name:"단백질", v:[8, 0, 0], color:"#8e44ad",
+   why:"혈장에는 있지만 여과액에는 없어요.", ans:"단백질은 <b>크기가 커서 사구체에서 여과되지 않기</b> 때문이에요."},
+  {name:"포도당", v:[0.1, 0.1, 0], color:"#d4ac0d",
+   why:"여과액에는 있지만 오줌에는 없어요.", ans:"여과는 되지만 세뇨관에서 <b>모두 재흡수</b>되기 때문이에요."},
+  {name:"아미노산", v:[0.05, 0.05, 0], color:"#27ae60",
+   why:"여과액에는 있지만 오줌에는 없어요.", ans:"포도당처럼 몸에 꼭 필요한 영양소라서 세뇨관에서 <b>모두 재흡수</b>돼요."},
+  {name:"요소", v:[0.03, 0.03, 2], color:"#e67e22",
+   why:"오줌에서 농도가 약 <b>67배</b>나 높아졌어요.", ans:"요소는 거의 재흡수되지 않는데, <b>물이 대부분 재흡수</b>되어 오줌이 진해지기 때문이에요. 분비로 더해지는 요소도 있어요."},
+  {name:"무기염류", v:[0.9, 0.9, 1.5], color:"#7f8c8d",
+   why:"여과액보다 오줌에서 조금 진해졌어요.", ans:"무기염류는 <b>일부만 재흡수</b>되고, 물이 더 많이 재흡수되어 농도가 약간 높아져요."}
+];
+var LIQ = ["혈장","여과액","오줌"];
+$("#cmpBody").innerHTML = CMP.map(function(r, i){
+  return "<tr data-i='" + i + "'><td><b>" + r.name + "</b></td>" + r.v.map(function(x){ return "<td>" + x + "</td>"; }).join("") + "</tr>";
+}).join("");
+$$("#cmpBody tr").forEach(function(tr){
+  tr.tabIndex = 0;
+  function pick(){
+    var r = CMP[+tr.dataset.i], max = Math.max.apply(null, r.v);
+    $$("#cmpBody tr").forEach(function(x){ x.classList.toggle("sel", x === tr); });
+    var bars = r.v.map(function(x, i){
+      return "<div class='bar-row'><b>" + LIQ[i] + "</b><div class='bar-track'><div class='bar-fill' data-w='" + (max ? x/max*100 : 0) + "' style='background:" + r.color + "'></div></div><span>" + x + "</span></div>";
+    }).join("");
+    $("#cmpInfo").innerHTML = "<span class='tag'>탐구 활동</span><h3 style='margin-top:4px'>" + r.name + "</h3><div class='bars'>" + bars + "</div>" +
+      "<p>🔍 " + r.why + " <b>왜 그럴까요?</b></p><button class='btn' id='cmpAns'>까닭 보기</button><div class='reveal' id='cmpRev'>" + r.ans + "</div>";
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){
+      $$("#cmpInfo .bar-fill").forEach(function(b){ b.style.width = b.dataset.w + "%"; });
+    }); });
+    $("#cmpAns").addEventListener("click", function(){ $("#cmpRev").classList.add("show"); this.style.display = "none"; });
   }
-  startQuiz();
+  tr.addEventListener("click", pick);
+  tr.addEventListener("keydown", function(e){ if(e.key === "Enter" || e.key === " "){ e.preventDefault(); pick(); } });
+});
+
+/* ================= 5. 순서 맞히기 ================= */
+var ORDERS = {
+  urine: {q:"혈액이 걸러지는 곳부터 오줌이 몸 밖으로 나갈 때까지의 순서는?",
+          seq:["사구체","보먼주머니","세뇨관","집합관","콩팥 깔때기","오줌관","방광","요도"], extra:["콩팥 정맥","간"]},
+  blood: {q:"콩팥으로 들어온 혈액이 다시 콩팥을 빠져나갈 때까지의 순서는?",
+          seq:["대동맥","콩팥 동맥","사구체","모세혈관","콩팥 정맥","대정맥"], extra:["보먼주머니","오줌관","방광"]}
+};
+var mode = "urine", pos = 0;
+function buildOrder(){
+  var o = ORDERS[mode]; pos = 0;
+  $("#orderQ").innerHTML = "<b>" + o.q + "</b>";
+  $("#slots").innerHTML = o.seq.map(function(_, i){ return "<div class='slot'><span class='sn'>" + (i+1) + "</span></div>"; }).join("");
+  $("#orderMsg").className = "msg"; $("#orderMsg").textContent = "";
+  var pool = $("#pool"); pool.innerHTML = "";
+  shuffle(o.seq.concat(o.extra)).forEach(function(w){
+    var b = document.createElement("button"); b.className = "btn"; b.textContent = w;
+    b.addEventListener("click", function(){
+      var msg = $("#orderMsg");
+      if(w === o.seq[pos]){
+        var s = $$("#slots .slot")[pos];
+        s.insertAdjacentText("beforeend", w); s.classList.add("filled");
+        b.classList.add("used"); pos++;
+        if(pos === o.seq.length){ msg.className = "msg good"; msg.textContent = "🎉 완벽해요! 순서를 모두 맞혔어요."; }
+        else { msg.className = "msg good"; msg.textContent = "좋아요! 다음은?"; }
+      } else {
+        msg.className = "msg bad";
+        msg.textContent = o.seq.indexOf(w) < 0 ? "‘" + w + "’은(는) 이 경로에 포함되지 않아요." : "아직 ‘" + w + "’의 차례가 아니에요.";
+        b.classList.remove("shake"); void b.offsetWidth; b.classList.add("shake");
+        setTimeout(function(){ b.classList.remove("shake"); }, 450);
+      }
+    });
+    pool.appendChild(b);
+  });
+}
+$$("[data-mode]").forEach(function(b){
+  b.addEventListener("click", function(){
+    mode = b.dataset.mode;
+    $$("[data-mode]").forEach(function(x){ x.classList.toggle("on", x === b); });
+    buildOrder();
+  });
+});
+$("#orderReset").addEventListener("click", buildOrder);
+buildOrder();
+
+/* ================= 6. 퀴즈 ================= */
+var QUIZ = [
+  {q:"단백질이 분해될 때만 생기는 노폐물은?", o:["암모니아","이산화탄소","물","포도당"], a:0,
+   e:"단백질에는 질소가 들어 있어서 분해될 때 암모니아가 생겨요."},
+  {q:"독성이 강한 암모니아를 독성이 약한 요소로 바꾸는 기관은?", o:["간","콩팥","방광","폐"], a:0,
+   e:"간에서 암모니아가 요소로 바뀌고, 요소는 콩팥에서 걸러져 오줌으로 나가요."},
+  {q:"오줌을 만드는 기본 단위는?", o:["네프론","사구체","콩팥 깔때기","방광"], a:0,
+   e:"네프론은 사구체, 보먼주머니, 세뇨관으로 이루어진 오줌 생성의 기본 단위예요."},
+  {q:"여과가 일어나는 방향으로 옳은 것은?", o:["사구체 → 보먼주머니","세뇨관 → 모세혈관","모세혈관 → 세뇨관","방광 → 요도"], a:0,
+   e:"여과는 사구체에서 보먼주머니로 일어나요. ‘세뇨관 → 모세혈관’은 재흡수, ‘모세혈관 → 세뇨관’은 분비예요."},
+  {q:"건강한 사람의 경우, 사구체에서 보먼주머니로 여과되지 않는 물질은?", o:["단백질","포도당","요소","물"], a:0,
+   e:"단백질과 혈구는 크기가 커서 여과되지 않아요."},
+  {q:"건강한 사람의 오줌에서 포도당이 검출되지 않는 까닭은?", o:["세뇨관에서 모두 재흡수되기 때문","사구체에서 여과되지 않기 때문","방광에서 분해되기 때문","간에서 요소로 바뀌기 때문"], a:0,
+   e:"포도당은 여과는 되지만, 세뇨관에서 모세혈관으로 모두 재흡수돼요."},
+  {q:"오줌이 몸 밖으로 나가는 경로로 옳은 것은?", o:["콩팥 → 오줌관 → 방광 → 요도","콩팥 → 요도 → 방광 → 오줌관","방광 → 콩팥 → 오줌관 → 요도","콩팥 → 방광 → 오줌관 → 요도"], a:0,
+   e:"콩팥에서 만든 오줌은 오줌관을 지나 방광에 모였다가 요도를 통해 나가요."},
+  {q:"요소의 농도가 여과액보다 오줌에서 훨씬 높은 까닭으로 가장 알맞은 것은?", o:["물이 대부분 재흡수되기 때문","요소가 재흡수되기 때문","단백질이 요소로 바뀌기 때문","요소가 여과되지 않기 때문"], a:0,
+   e:"물이 대부분 재흡수되면서 오줌이 농축되어 요소의 농도가 높아져요."},
+  {q:"다음 중 ‘배설’에 해당하지 않는 것은?", o:["소화되지 않은 찌꺼기를 대변으로 내보낸다.","요소를 오줌으로 내보낸다.","물을 땀으로 내보낸다.","오줌을 통해 무기염류를 내보낸다."], a:0,
+   e:"대변은 세포 호흡으로 생긴 노폐물이 아니라 흡수되지 않은 음식물 찌꺼기이므로 배설이 아니에요."},
+  {q:"콩팥 동맥과 콩팥 정맥의 혈액을 비교한 것으로 옳은 것은?", o:["콩팥 정맥의 혈액에 요소가 더 적다.","콩팥 정맥의 혈액에 요소가 더 많다.","두 혈관의 요소 양은 같다.","콩팥 동맥에는 요소가 없다."], a:0,
+   e:"콩팥을 지나면서 노폐물이 걸러지므로 콩팥 정맥의 혈액에는 요소가 더 적어요."}
+];
+var qOrder = [], qi = 0, score = 0, wrongList = [];
+var card = $("#quizCard");
+function startQuiz(){ qOrder = shuffle(QUIZ.map(function(_, i){ return i; })); qi = 0; score = 0; wrongList = []; renderQ(); }
+function renderQ(){
+  if(qi >= qOrder.length) return renderEnd();
+  var item = QUIZ[qOrder[qi]];
+  var opts = shuffle(item.o.map(function(t, i){ return {t:t, ok:i === item.a}; }));
+  var marks = ["①","②","③","④"];
+  card.innerHTML =
+    "<div class='q-progress'><div style='width:" + (qi/qOrder.length*100) + "%'></div></div>" +
+    "<div class='q-meta'>문제 " + (qi+1) + " / " + qOrder.length + " · 맞힌 문제 " + score + "개</div>" +
+    "<div class='q-text'>" + item.q + "</div><div class='opts'>" +
+    opts.map(function(o, i){ return "<button class='opt' data-ok='" + o.ok + "'><span class='on'>" + marks[i] + "</span><span>" + o.t + "</span></button>"; }).join("") +
+    "</div><div id='qAfter'></div>";
+  $$(".opt", card).forEach(function(b){
+    b.addEventListener("click", function(){
+      var ok = b.dataset.ok === "true";
+      $$(".opt", card).forEach(function(x){ x.disabled = true; if(x.dataset.ok === "true") x.classList.add("correct"); });
+      if(ok) score++; else { b.classList.add("wrong"); wrongList.push(item); }
+      $("#qAfter").innerHTML = "<div class='exp'><b>" + (ok ? "⭕ 정답이에요!" : "❌ 아쉬워요.") + "</b> " + item.e + "</div>" +
+        "<div class='btn-row'><button class='btn primary' id='qNext'>" + (qi === qOrder.length-1 ? "결과 보기" : "다음 문제 ▶") + "</button></div>";
+      $("#qNext").addEventListener("click", function(){ qi++; renderQ(); });
+      $("#qNext").focus();
+    });
+  });
+}
+function renderEnd(){
+  var n = qOrder.length, msg = score === n ? "완벽해요! 배설계 박사 🏆" : score >= n*0.7 ? "잘했어요! 틀린 부분만 다시 확인해 봐요 👍" : "다시 한 번 복습하고 도전해 봐요 💪";
+  var review = wrongList.length ? "<h3>다시 볼 문제</h3><ul>" + wrongList.map(function(w){ return "<li><b>" + w.q + "</b><br>→ " + w.o[w.a] + "</li>"; }).join("") + "</ul>" : "";
+  card.innerHTML = "<div class='q-progress'><div style='width:100%'></div></div><p class='q-meta' style='text-align:center'>나의 점수</p>" +
+    "<div class='score-big'>" + score + " / " + n + "</div><p style='text-align:center;font-weight:800'>" + msg + "</p>" + review +
+    "<div class='btn-row' style='justify-content:center'><button class='btn primary' id='qRe'>↺ 다시 풀기</button><button class='btn' id='qHome'>처음 단원으로</button></div>";
+  $("#qRe").addEventListener("click", startQuiz);
+  $("#qHome").addEventListener("click", function(){ showTab("intro", true); });
+}
+startQuiz();
+
+/* ---------- 시작 ---------- */
+showTab((location.hash || "#intro").slice(1), false);
 })();
 </script>
 </body>
